@@ -13,19 +13,6 @@ import java.util.Random;
 
 public class BeanUtil {
 
-    public static String isLike(String string){
-        try {
-            return "%"+new String(string.getBytes("iso-8859-1"),"utf-8")+"%";
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static void copyBean(Object source,Object target){
-        BeanUtils.copyProperties(source,target);
-    }
-
     public static Boolean isNull(Object object){
         return (object == null);
     }
@@ -42,13 +29,22 @@ public class BeanUtil {
         return (string != null && !string.trim().isEmpty());
     }
 
-    public static Boolean notEmpty(List list){
+    public static Boolean isEmpty(List<?> list){ return (list == null || list.size() == 0);}
+
+    public static Boolean notEmpty(List<?> list){
         return (list != null && list.size() > 0);
     }
 
-    public static synchronized Long getKey() {
-        Integer number = new Random().nextInt(900000) + 100000;
-        return System.currentTimeMillis() + number;
+    public static void copyBean(Object source,Object target){
+        BeanUtils.copyProperties(source,target);
+    }
+
+    public static synchronized Long getId() {
+        return System.currentTimeMillis() + new Random().nextInt(900000) + 100000;
+    }
+
+    public static String isLike(String string) throws UnsupportedEncodingException{
+        return "%"+new String(string.getBytes("iso-8859-1"),"utf-8")+"%";
     }
 
 }

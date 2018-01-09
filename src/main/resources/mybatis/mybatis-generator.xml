@@ -32,5 +32,8 @@
         <!-- 表名 -->
         <!--<table tableName="user" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />-->
         <table tableName="product" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />
+        <table tableName="product_category" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />
+        <table tableName="seller" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />
+        <table tableName="shop" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />
     </context>
 </generatorConfiguration>

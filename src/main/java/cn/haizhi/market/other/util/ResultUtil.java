@@ -25,6 +25,13 @@ public class ResultUtil {
         return resultView;
     }
 
+    public static ResultView returnSuccess(){
+        ResultView resultView = new ResultView();
+        resultView.setCode(ResultEnum.SUCCESS_RESULT.getCode());
+        resultView.setHint(ResultEnum.SUCCESS_RESULT.getHint());
+        return resultView;
+    }
+
     public static ResultView returnSuccess(String hint){
         ResultView resultView = new ResultView();
         resultView.setCode(ResultEnum.SUCCESS_RESULT.getCode());
