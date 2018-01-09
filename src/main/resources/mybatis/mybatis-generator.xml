@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="test" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 跳过日期 -->
+            <property name="suppressDate" value="true" />
+            <!-- 跳过注释 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!--连接数据库 -->
+        <jdbcConnection userId="root" password="guosandan" connectionURL="jdbc:mysql://rm-wz92z04op413401h1o.mysql.rds.aliyuncs.com:3306/market?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=true" driverClass="com.mysql.jdbc.Driver" />
+        <javaTypeResolver>
+            <!-- 取消强制转换BigDecimal类型-->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- 生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="cn.haizhi.market.main.bean" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- 生成映射的包名和位置 -->
+        <sqlMapGenerator targetPackage="cn.haizhi.market.main.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!-- 生成接口的包名和位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.haizhi.market.main.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        <!-- 表名 -->
+        <!--<table tableName="user" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />-->
+        <table tableName="product" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />
+    </context>
+</generatorConfiguration>
