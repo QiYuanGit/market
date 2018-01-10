@@ -1,6 +1,8 @@
 package cn.haizhi.market.main.bean;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Date: 2018/1/9
