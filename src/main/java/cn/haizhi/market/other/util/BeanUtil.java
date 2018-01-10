@@ -39,6 +39,7 @@ public class BeanUtil {
         BeanUtils.copyProperties(source,target);
     }
 
+    //最大19位
     public static synchronized Long getId() {
         return System.currentTimeMillis() + new Random().nextInt(900000) + 100000;
     }

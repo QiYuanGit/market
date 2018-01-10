@@ -29,10 +29,11 @@ public class ResultExceptionHandler implements HandlerExceptionResolver {
             ResultException resultException = (ResultException) exception;
             resultView.setCode(ResultEnum.FAILURE_RESULT.getCode());
             resultView.setHint(ResultEnum.FAILURE_RESULT.getHint()+resultException.getHint());
+            System.out.println(resultException.getHint());
         }else{
-            exception.printStackTrace();
             resultView.setCode(ResultEnum.ERROR_RESULT.getCode());
             resultView.setHint(ResultEnum.ERROR_RESULT.getHint());
+            exception.printStackTrace();
         }
         try {
             response.setCharacterEncoding("UTF-8");
@@ -41,8 +42,8 @@ public class ResultExceptionHandler implements HandlerExceptionResolver {
             printWriter.flush();
             printWriter.print(new ObjectMapper().writeValueAsString(resultView));
             printWriter.close();
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }

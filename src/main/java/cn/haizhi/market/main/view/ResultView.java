@@ -3,6 +3,8 @@ package cn.haizhi.market.main.view;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Date: 2018/1/9
  * Author: Richard

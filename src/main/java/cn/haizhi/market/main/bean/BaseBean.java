@@ -8,7 +8,7 @@ import lombok.Data;
  */
 
 @Data
-public class BaseBean {
+public class BaseBean{
 
     protected Integer pageNum;
     protected Integer pageSize;
