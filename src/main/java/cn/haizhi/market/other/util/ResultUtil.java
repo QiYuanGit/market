@@ -1,8 +1,8 @@
 package cn.haizhi.market.other.util;
 
 
-import cn.haizhi.market.other.enums.ResultEnum;
 import cn.haizhi.market.main.view.ResultView;
+import cn.haizhi.market.other.enums.ResultEnum;
 
 /**
  * Date: 2018/1/9

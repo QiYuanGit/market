@@ -12,7 +12,7 @@
         <!-- 使用驼峰命名转换-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
-    <!--<plugins>-->
-        <!--<plugin interceptor="com.github.pagehelper.PageHelper" />-->
-    <!--</plugins>-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor" />
+    </plugins>
 </configuration>
