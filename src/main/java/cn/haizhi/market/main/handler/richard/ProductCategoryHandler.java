@@ -21,13 +21,13 @@ public class ProductCategoryHandler {
     private ProductCategoryService productCategoryService;
 
     @PostMapping(value = "/productCategory",produces = "application/json; charset=UTF-8")
-    public ResultView insert(ProductCategory form){
+    public ResultView insert(@RequestBody ProductCategory form){
         productCategoryService.insert(form);
         return ResultUtil.returnSuccess();
     }
 
     @PutMapping(value = "/productCategory",produces = "application/json; charset=UTF-8")
-    public ResultView update(ProductCategory form){
+    public ResultView update(@RequestBody ProductCategory form){
         productCategoryService.update(form);
         return ResultUtil.returnSuccess();
     }
