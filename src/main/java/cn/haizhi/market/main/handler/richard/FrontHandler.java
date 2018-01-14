@@ -1,6 +1,7 @@
 package cn.haizhi.market.main.handler.richard;
 
 import cn.haizhi.market.main.bean.richard.Product;
+import cn.haizhi.market.main.bean.richard.ProductCategory;
 import cn.haizhi.market.main.bean.richard.Shop;
 import cn.haizhi.market.main.bean.richard.ShopComment;
 import cn.haizhi.market.main.service.richard.FrontService;
@@ -21,9 +22,19 @@ public class FrontHandler {
     @Autowired
     private FrontService frontService;
 
-    @GetMapping(value = "/shops/pcategories",produces = "application/json; charset=UTF-8")
-    public ResultView getShopPcategory() throws Exception {
-        return ResultUtil.returnSuccess(frontService.getShopsPcategories());
+    @GetMapping(value = "/product/categories",produces = "application/json; charset=UTF-8")
+    public ResultView getProductCategories(ProductCategory productCategoryForm) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getProductCategories(productCategoryForm));
+    }
+
+    @GetMapping(value = "/products",produces = "application/json; charset=UTF-8")
+    public ResultView getProducts(Product productForm) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getProducts(productForm));
+    }
+
+    @GetMapping(value = "/product",produces = "application/json; charset=UTF-8")
+    public ResultView getProduct(@RequestParam("productId") Long productId) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getProduct(productId));
     }
 
     @GetMapping(value = "/shops",produces = "application/json; charset=UTF-8")
@@ -39,16 +50,6 @@ public class FrontHandler {
     @GetMapping(value = "/shop/comments",produces = "application/json; charset=UTF-8")
     public ResultView getShopProduct(ShopComment shopCommentForm) throws Exception {
         return ResultUtil.returnSuccess(frontService.getShopComments(shopCommentForm));
-    }
-
-    @GetMapping(value = "/products",produces = "application/json; charset=UTF-8")
-    public ResultView getProducts(Product productForm) throws Exception {
-        return ResultUtil.returnSuccess(frontService.getProducts(productForm));
-    }
-
-    @GetMapping(value = "/product",produces = "application/json; charset=UTF-8")
-    public ResultView getProduct(@RequestParam("productId") Long productId) throws Exception {
-        return ResultUtil.returnSuccess(frontService.getProduct(productId));
     }
 
 }

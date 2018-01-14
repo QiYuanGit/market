@@ -37,50 +37,17 @@ public class FrontService {
     @Autowired
     private ShopCommentService shopCommentService;
 
-    public Map<String, Object> getShopsPcategories() throws Exception {
+    //查询全部商品分类，接收当前页码、每页条数
+    //首页
+    public Map<String, Object> getProductCategories(ProductCategory productCategoryForm) throws Exception {
         Map<String, Object> dataMap = new LinkedHashMap<>();
-        //查询商品分类
-        ProductCategory productCategoryForm = new ProductCategory();
-        productCategoryForm.setPageNum(1);
-        productCategoryForm.setPageSize(8);
         List<ProductCategory> productCategories = productCategoryService.getall(productCategoryForm);
-        dataMap.put("productCategories",productCategories );
-        //查询推荐商店
-        Shop shopForm = new Shop();
-        shopForm.setPageNum(1);
-        shopForm.setPageSize(10);
-        shopForm.setIsRecom(true);
-        List<ShopView> shopViewList = shopService.getallWithJoin(shopForm);
-        dataMap.put("recommendShops", new PageView(shopViewList));
-        return dataMap;
-    }
-
-    //查询全部商店，接收当前页码、每页条数
-    public Map<String, Object> getShops(Shop shopForm) throws Exception{
-        Map<String, Object> dataMap = new LinkedHashMap<>();
-        List<ShopView> shopViewList = shopService.getallWithJoin(shopForm);
-        dataMap.put("shops", new PageView(shopViewList));
-        return dataMap;
-    }
-
-    //查询单个商店,接收商店编号
-    public Map<String, Object> getShop(Long shopId) throws Exception {
-        Map<String, Object> dataMap = new LinkedHashMap<>();
-        ShopView shopView = shopService.getoneWithJoin(shopId);
-        dataMap.put("shop",shopView);
-        return dataMap;
-    }
-
-    //查询全部商店评论，接收商店编号、当前页码、每页条数
-    public Map<String,Object> getShopComments(ShopComment shopCommentForm) throws Exception {
-        Map<String, Object> dataMap = new LinkedHashMap<>();
-        List<ShopCommentView> shopCommentViewList = shopCommentService.getallWithJoin(shopCommentForm);
-        dataMap.put("shopComments",new PageView(shopCommentViewList));
+        dataMap.put("productCategories",new PageView(productCategories));
         return dataMap;
     }
 
     //查询全部商品，接收当前页码、每页条数、商店编号、商品类别编号
-    //商品列表,搜索商品，商店商品列表
+    //商品列表页面,商店商品列表页面，搜索商品页面
     public Map<String, Object> getProducts(Product productForm) throws Exception{
         Map<String, Object> dataMap = new LinkedHashMap<>();
         List<ProductView> productViews = new ArrayList<>();
@@ -95,12 +62,40 @@ public class FrontService {
     }
 
     //查询单个商品，接收商品编号
+    //商品详情页面
     public Map<String,Object> getProduct(Long productId){
         Map<String, Object> dataMap = new LinkedHashMap<>();
         ProductView productView = new ProductView();
         Product product = productService.getone(productId);
         BeanUtil.copyBean(product,productView);
         dataMap.put("product",productView);
+        return dataMap;
+    }
+
+    //查询全部商店，接收当前页码、每页条数、是否推荐
+    //首页，商店列表页面
+    public Map<String, Object> getShops(Shop shopForm) throws Exception{
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        List<ShopView> shopViewList = shopService.getallWithJoin(shopForm);
+        dataMap.put("shops", new PageView(shopViewList));
+        return dataMap;
+    }
+
+    //查询单个商店,接收商店编号
+    //商店详情页面
+    public Map<String, Object> getShop(Long shopId) throws Exception {
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        ShopView shopView = shopService.getoneWithJoin(shopId);
+        dataMap.put("shop",shopView);
+        return dataMap;
+    }
+
+    //查询全部商店评论，接收商店编号、当前页码、每页条数
+    //商店详情页面
+    public Map<String,Object> getShopComments(ShopComment shopCommentForm) throws Exception {
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        List<ShopCommentView> shopCommentViewList = shopCommentService.getallWithJoin(shopCommentForm);
+        dataMap.put("shopComments",new PageView(shopCommentViewList));
         return dataMap;
     }
 
