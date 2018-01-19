@@ -14,5 +14,5 @@ public class ShopPictureView {
 
     private Long pictureId;
 
-    private Long picturePath;
+    private String picturePath;
 }

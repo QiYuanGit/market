@@ -24,42 +24,44 @@ public class ShopPictureService {
     @Autowired
     private ShopPictureMapper shopPictureMapper;
 
-    public void insert(ShopPicture form){
-        form.setPictureId(BeanUtil.getId());
-        shopPictureMapper.insertSelective(form);
-    }
-
-    public void update(ShopPicture form){
-        ShopPicture record = this.getone(form.getPictureId());
-        if(BeanUtil.isNull(record)){
-            throw new ResultException("记录不存在！");
-        }
-        BeanUtil.copyBean(form,record);
-        shopPictureMapper.updateByPrimaryKeySelective(record);
-    }
-
-    public void delete(Long id){
-        if(BeanUtil.isNull(this.getone(id))){
-            throw new ResultException("记录不存在！");
-        }
-        shopPictureMapper.deleteByPrimaryKey(id);
-    }
-
-    public ShopPicture getone(Long id){
-        if(BeanUtil.isNull(id)){
-            throw new ResultException("编号不能为空！");
-        }
-        return shopPictureMapper.selectByPrimaryKey(id);
-    }
-
-    public List<ShopPicture> getall(ShopPicture form)throws Exception{
+    public List<ShopPicture> selectLog(ShopPicture form)throws Exception{
         ShopPictureExample example = new ShopPictureExample();
         ShopPictureExample.Criteria criteria = example.createCriteria();
-
+        if(BeanUtil.notNull(form.getShopId())){
+            criteria.andShopIdEqualTo(form.getShopId());
+        }
+        if(BeanUtil.notEmpty(form.getIdList())){
+            criteria.andShopIdIn(form.getIdList());
+        }
         if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
             PageHelper.startPage(form.getPageNum(),form.getPageSize());
         }
         return shopPictureMapper.selectByExample(example);
     }
 
+    public ShopPicture selectOne(Long id){
+        if(BeanUtil.isNull(id)){
+            throw new ResultException("编号不能为空！");
+        }
+        return shopPictureMapper.selectByPrimaryKey(id);
+    }
+
+    public void insertOne(ShopPicture form){
+        form.setPictureId(BeanUtil.getId());
+        shopPictureMapper.insertSelective(form);
+    }
+
+    public void updateOne(ShopPicture form){
+        if(BeanUtil.isNull(this.selectOne(form.getPictureId()))){
+            throw new ResultException("记录不存在！");
+        }
+        shopPictureMapper.updateByPrimaryKeySelective(form);
+    }
+
+    public void delete(Long id){
+        if(BeanUtil.isNull(this.selectOne(id))){
+            throw new ResultException("记录不存在！");
+        }
+        shopPictureMapper.deleteByPrimaryKey(id);
+    }
 }

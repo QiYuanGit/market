@@ -10,6 +10,8 @@ import cn.haizhi.market.other.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * Date: 2018/1/9
  * Author: Richard
@@ -28,8 +30,8 @@ public class FrontHandler {
     }
 
     @GetMapping(value = "/products",produces = "application/json; charset=UTF-8")
-    public ResultView getProducts(Product productForm) throws Exception {
-        return ResultUtil.returnSuccess(frontService.getProducts(productForm));
+    public ResultView getProducts(Product productForm,@RequestParam(value = "pcategoryName",required = false)String pcategoryName) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getProducts(productForm,pcategoryName));
     }
 
     @GetMapping(value = "/product",produces = "application/json; charset=UTF-8")

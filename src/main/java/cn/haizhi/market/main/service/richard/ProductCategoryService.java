@@ -24,41 +24,7 @@ public class ProductCategoryService {
     @Autowired
     private ProductCategoryMapper productCategoryMapper;
 
-    public void insert(ProductCategory form){
-        form.setCategoryId(BeanUtil.getId());
-        if(BeanUtil.isEmpty(form.getCategoryName())){
-            throw new ResultException("分类名称不能为空！");
-        }
-        productCategoryMapper.insertSelective(form);
-    }
-
-    public void update(ProductCategory form){
-        ProductCategory record = this.getone(form.getCategoryId());
-        if(BeanUtil.isNull(record)){
-            throw new ResultException("记录不存在！");
-        }
-        if(BeanUtil.isEmpty(form.getCategoryName())){
-            throw new ResultException("分类名称不能为空！");
-        }
-        BeanUtil.copyBean(form,record);
-        productCategoryMapper.updateByPrimaryKeySelective(record);
-    }
-
-    public void delete(Long id){
-        if(BeanUtil.isNull(this.getone(id))){
-            throw new ResultException("记录不存在！");
-        }
-        productCategoryMapper.deleteByPrimaryKey(id);
-    }
-
-    public ProductCategory getone(Long id){
-        if(BeanUtil.isNull(id)){
-            throw new ResultException("编号不能为空！");
-        }
-        return productCategoryMapper.selectByPrimaryKey(id);
-    }
-
-    public List<ProductCategory> getall(ProductCategory form)throws Exception{
+    public List<ProductCategory> selectLot(ProductCategory form)throws Exception{
         ProductCategoryExample example = new ProductCategoryExample();
         ProductCategoryExample.Criteria criteria = example.createCriteria();
         if(BeanUtil.notEmpty(form.getCategoryName())){
@@ -68,6 +34,35 @@ public class ProductCategoryService {
             PageHelper.startPage(form.getPageNum(),form.getPageSize());
         }
         return productCategoryMapper.selectByExample(example);
+    }
+
+    public ProductCategory selectOne(Long id){
+        if(BeanUtil.isNull(id)){
+            throw new ResultException("编号不能为空！");
+        }
+        return productCategoryMapper.selectByPrimaryKey(id);
+    }
+
+    public void insertOne(ProductCategory form){
+        form.setCategoryId(BeanUtil.getId());
+        if(BeanUtil.isEmpty(form.getCategoryName())){
+            throw new ResultException("分类名称不能为空！");
+        }
+        productCategoryMapper.insertSelective(form);
+    }
+
+    public void updateOne(ProductCategory form){
+        if(BeanUtil.isNull(this.selectOne(form.getCategoryId()))){
+            throw new ResultException("记录不存在！");
+        }
+        productCategoryMapper.updateByPrimaryKeySelective(form);
+    }
+
+    public void deleteOne(Long id){
+        if(BeanUtil.isNull(this.selectOne(id))){
+            throw new ResultException("记录不存在！");
+        }
+        productCategoryMapper.deleteByPrimaryKey(id);
     }
 
 }

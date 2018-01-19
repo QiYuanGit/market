@@ -25,7 +25,7 @@
         </property>
     </bean>
     <!-- 配置全局异常处理 -->
-    <bean id="resultExceptionHandler" class="cn.haizhi.market.other.handler.ResultExceptionHandler" />
+    <bean id="resultExceptionHandler" class="cn.haizhi.market.other.web.ResultExceptionHandler" />
     <!-- 配置全局拦截处理 -->
     <mvc:interceptors>
         <mvc:interceptor>

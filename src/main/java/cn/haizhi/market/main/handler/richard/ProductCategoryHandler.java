@@ -22,33 +22,33 @@ public class ProductCategoryHandler {
 
     @PostMapping(value = "/productCategory",produces = "application/json; charset=UTF-8")
     public ResultView insert(@RequestBody ProductCategory form){
-        productCategoryService.insert(form);
+        productCategoryService.insertOne(form);
         return ResultUtil.returnSuccess();
     }
 
     @PutMapping(value = "/productCategory",produces = "application/json; charset=UTF-8")
     public ResultView update(@RequestBody ProductCategory form){
-        productCategoryService.update(form);
+        productCategoryService.updateOne(form);
         return ResultUtil.returnSuccess();
     }
 
     @DeleteMapping(value = "/productCategory/{id}",produces = "application/json; charset=UTF-8")
     public ResultView delete(@PathVariable("id")Long id){
-        productCategoryService.delete(id);
+        productCategoryService.deleteOne(id);
         return ResultUtil.returnSuccess();
     }
 
     @GetMapping(value = "/productCategory/{id}",produces = "application/json; charset=UTF-8")
     public ResultView getone(@PathVariable("id")Long id){
-        return ResultUtil.returnSuccess(productCategoryService.getone(id));
+        return ResultUtil.returnSuccess(productCategoryService.selectOne(id));
     }
 
     @GetMapping(value = "/productCategorys",produces = "application/json; charset=UTF-8")
     public ResultView getall(ProductCategory form) throws Exception {
         if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
-           return ResultUtil.returnSuccess(new PageInfo<>(productCategoryService.getall(form)));
+           return ResultUtil.returnSuccess(new PageInfo<>(productCategoryService.selectLot(form)));
         }else{
-            return ResultUtil.returnSuccess(productCategoryService.getall(form));
+            return ResultUtil.returnSuccess(productCategoryService.selectLot(form));
         }
     }
 }

@@ -44,8 +44,8 @@ public class BeanUtil {
         return System.currentTimeMillis() + new Random().nextInt(900000) + 100000;
     }
 
-    public static String isLike(String string) throws UnsupportedEncodingException{
-        return "%"+new String(string.getBytes("iso-8859-1"),"utf-8")+"%";
+    public static String isLike(String string) throws UnsupportedEncodingException {
+        return "%" + new String(string.getBytes("iso-8859-1"), "utf-8") + "%";
     }
 
 }

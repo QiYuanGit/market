@@ -22,33 +22,33 @@ public class ShopHandler {
 
     @PostMapping(value = "/shop",produces = "application/json; charset=UTF-8")
     public ResultView insert(@RequestBody Shop form){
-        shopService.insert(form);
+        shopService.insertOne(form);
         return ResultUtil.returnSuccess();
     }
 
     @PutMapping(value = "/shop",produces = "application/json; charset=UTF-8")
     public ResultView update(@RequestBody Shop form){
-        shopService.update(form);
+        shopService.updateOne(form);
         return ResultUtil.returnSuccess();
     }
 
     @DeleteMapping(value = "/shop/{id}",produces = "application/json; charset=UTF-8")
     public ResultView delete(@PathVariable("id")Long id){
-        shopService.delete(id);
+        shopService.deleteOne(id);
         return ResultUtil.returnSuccess();
     }
 
     @GetMapping(value = "/shop/{id}",produces = "application/json; charset=UTF-8")
     public ResultView getone(@PathVariable("id")Long id){
-        return ResultUtil.returnSuccess(shopService.getone(id));
+        return ResultUtil.returnSuccess(shopService.selectOne(id));
     }
 
     @GetMapping(value = "/shops",produces = "application/json; charset=UTF-8")
     public ResultView getall(Shop form) throws Exception {
         if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
-           return ResultUtil.returnSuccess(new PageInfo<>(shopService.getall(form)));
+           return ResultUtil.returnSuccess(new PageInfo<>(shopService.selectLot(form)));
         }else{
-            return ResultUtil.returnSuccess(shopService.getall(form));
+            return ResultUtil.returnSuccess(shopService.selectLot(form));
         }
     }
 }

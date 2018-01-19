@@ -5,12 +5,9 @@ import cn.haizhi.market.main.bean.richard.ShopExample;
 import cn.haizhi.market.main.view.richard.ShopView;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ShopMapper {
-
-    ShopView getoneWithJoin(Long id);
-
-    List<ShopView> getallWithJoin(Shop shopForm);
 
     long countByExample(ShopExample example);
 

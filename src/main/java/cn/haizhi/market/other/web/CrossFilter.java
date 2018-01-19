@@ -1,4 +1,4 @@
-package cn.haizhi.market.other.handler;
+package cn.haizhi.market.other.web;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;

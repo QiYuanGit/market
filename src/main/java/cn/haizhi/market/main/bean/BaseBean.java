@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * Date: 2018/1/9
  * Author: Richard
@@ -14,4 +16,6 @@ public class BaseBean{
 
     protected Integer pageNum;
     protected Integer pageSize;
+    protected Integer orderBy;
+    protected List<Long> idList;
 }

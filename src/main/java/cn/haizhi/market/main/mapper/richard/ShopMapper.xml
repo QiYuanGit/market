@@ -2,47 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.haizhi.market.main.mapper.richard.ShopMapper">
 
-  <resultMap id="PackResultMap" type="cn.haizhi.market.main.view.richard.ShopView">
-    <id column="shop_id" jdbcType="BIGINT" property="shopId" />
-    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
-    <result column="shop_address" jdbcType="VARCHAR" property="shopAddress" />
-    <result column="shop_phone" jdbcType="VARCHAR" property="shopPhone" />
-    <result column="shop_sale" jdbcType="INTEGER" property="shopSale" />
-    <result column="shop_desc" jdbcType="VARCHAR" property="shopDesc" />
-    <result column="shop_grade" jdbcType="INTEGER" property="shopGrade" />
-    <result column="limit_price" jdbcType="DECIMAL" property="limitPrice" />
-    <result column="send_price" jdbcType="DECIMAL" property="sendPrice" />
-    <result column="work_time" jdbcType="TIME" property="workTime" />
-    <collection column="shop_id" ofType="cn.haizhi.market.main.view.richard.ShopPictureView" property="shopPictures">
-      <id column="picture_id" jdbcType="BIGINT" property="pictureId" />
-      <result column="picture_path" jdbcType="VARCHAR" property="picturePath" />
-    </collection>
-  </resultMap>
-
-  <select id="getoneWithJoin" parameterType="java.lang.Long" resultMap="PackResultMap">
-    select a.shop_id,a.shop_name,a.shop_address,a.shop_phone,a.shop_sale,a.shop_desc,
-    a.shop_grade,a.limit_price,a.send_price,a.work_time,b.picture_id,b.picture_path from shop as a join shop_picture as b
-    on a.shop_id = b.shop_id where a.shop_id = #{shopId}
-
-  </select>
-
-  <select id="getallWithJoin" parameterType="cn.haizhi.market.main.bean.richard.Shop" resultMap="PackResultMap">
-    select a.shop_id,a.shop_name,a.shop_address,a.shop_phone,a.shop_sale,a.shop_desc,
-    a.shop_grade,a.limit_price,a.send_price,a.work_time,b.picture_id,b.picture_path from shop as a join shop_picture as b
-    on a.shop_id = b.shop_id
-    <where>
-      <if test="shopId != null">
-        a.shop_id = #{shopId}
-      </if>
-      <if test="shopName != null and !shopName.isEmpty()">
-        and a.shop_name like #{shopName}
-      </if>
-      <if test="isRecom != null">
-        and a.is_recom = #{isRecom}
-      </if>
-    </where>
-  </select>
-
   <resultMap id="BaseResultMap" type="cn.haizhi.market.main.bean.richard.Shop">
     <id column="shop_id" jdbcType="BIGINT" property="shopId" />
     <result column="shop_name" jdbcType="VARCHAR" property="shopName" />

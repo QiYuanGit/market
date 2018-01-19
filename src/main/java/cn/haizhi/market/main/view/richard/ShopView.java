@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,5 +40,9 @@ public class ShopView {
     @JsonSerialize(using = SerializerUtil.class)
     private Date workTime;
 
-    private List<ShopPictureView> shopPictures;
+    private List<ShopPictureView> shopPictures = new ArrayList<>();
+
+    public void addPicture(ShopPictureView shopPictureView){
+        shopPictures.add(shopPictureView);
+    }
 }

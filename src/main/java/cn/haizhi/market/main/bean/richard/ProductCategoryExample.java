@@ -233,6 +233,76 @@ public class ProductCategoryExample {
             addCriterion("category_name not between", value1, value2, "categoryName");
             return (Criteria) this;
         }
+
+        public Criteria andCategoryIconIsNull() {
+            addCriterion("category_icon is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconIsNotNull() {
+            addCriterion("category_icon is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconEqualTo(String value) {
+            addCriterion("category_icon =", value, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconNotEqualTo(String value) {
+            addCriterion("category_icon <>", value, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconGreaterThan(String value) {
+            addCriterion("category_icon >", value, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconGreaterThanOrEqualTo(String value) {
+            addCriterion("category_icon >=", value, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconLessThan(String value) {
+            addCriterion("category_icon <", value, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconLessThanOrEqualTo(String value) {
+            addCriterion("category_icon <=", value, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconLike(String value) {
+            addCriterion("category_icon like", value, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconNotLike(String value) {
+            addCriterion("category_icon not like", value, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconIn(List<String> values) {
+            addCriterion("category_icon in", values, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconNotIn(List<String> values) {
+            addCriterion("category_icon not in", values, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconBetween(String value1, String value2) {
+            addCriterion("category_icon between", value1, value2, "categoryIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIconNotBetween(String value1, String value2) {
+            addCriterion("category_icon not between", value1, value2, "categoryIcon");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
