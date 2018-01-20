@@ -1,6 +1,7 @@
 package cn.haizhi.market.main.service.madao;
 
 import cn.haizhi.market.main.bean.madao.*;
+import cn.haizhi.market.main.bean.qiyuan.UserAddress;
 import cn.haizhi.market.main.bean.richard.Product;
 import cn.haizhi.market.main.mapper.madao.*;
 import cn.haizhi.market.main.mapper.richard.ProductMapper;
