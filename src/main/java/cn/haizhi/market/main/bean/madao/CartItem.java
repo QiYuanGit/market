@@ -6,6 +6,8 @@ import lombok.Data;
 public class CartItem {
     private String itemId;
 
+    private String cartId;
+
     private Long userId;
 
     private Long shopId;
@@ -18,16 +20,5 @@ public class CartItem {
 
     private Byte itemCategory;
 
-    public CartItem(String itemId, Long userId, Long shopId, String shopName, Long productId, Integer productQuantity, Byte itemCategory) {
-        this.itemId = itemId;
-        this.userId = userId;
-        this.shopId = shopId;
-        this.shopName = shopName;
-        this.productId = productId;
-        this.productQuantity = productQuantity;
-        this.itemCategory = itemCategory;
-    }
 
-    public CartItem() {
-    }
 }

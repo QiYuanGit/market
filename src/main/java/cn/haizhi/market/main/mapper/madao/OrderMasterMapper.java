@@ -3,9 +3,12 @@ package cn.haizhi.market.main.mapper.madao;
 import cn.haizhi.market.main.bean.madao.OrderMaster;
 import cn.haizhi.market.main.bean.madao.OrderMasterExample;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface OrderMasterMapper {
     long countByExample(OrderMasterExample example);
+
+    int deleteByExample(OrderMasterExample example);
 
     int deleteByPrimaryKey(String orderId);
 
@@ -16,6 +19,10 @@ public interface OrderMasterMapper {
     List<OrderMaster> selectByExample(OrderMasterExample example);
 
     OrderMaster selectByPrimaryKey(String orderId);
+
+    int updateByExampleSelective(@Param("record") OrderMaster record, @Param("example") OrderMasterExample example);
+
+    int updateByExample(@Param("record") OrderMaster record, @Param("example") OrderMasterExample example);
 
     int updateByPrimaryKeySelective(OrderMaster record);
 

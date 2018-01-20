@@ -5,8 +5,12 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PurchaseGroup {
+public class PgGroup {
     private String groupId;
+
+    private String leadMemberId;
+
+    private Long userId;
 
     private Integer groupNum;
 
@@ -14,7 +18,12 @@ public class PurchaseGroup {
 
     private Byte groupStatus;
 
+    private Date deadDate;
+
+    private Byte activeStatus;
+
     private Date createTime;
 
     private Date updateTime;
+
 }

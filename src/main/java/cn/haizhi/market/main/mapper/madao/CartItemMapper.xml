@@ -3,6 +3,7 @@
 <mapper namespace="cn.haizhi.market.main.mapper.madao.CartItemMapper">
   <resultMap id="BaseResultMap" type="cn.haizhi.market.main.bean.madao.CartItem">
     <id column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="cart_id" jdbcType="VARCHAR" property="cartId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="shop_id" jdbcType="BIGINT" property="shopId" />
     <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
@@ -39,8 +40,37 @@
       </foreach>
     </where>
   </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
   <sql id="Base_Column_List">
-    item_id, user_id, shop_id, shop_name, product_id, product_quantity, item_category
+    item_id, cart_id, user_id, shop_id, shop_name, product_id, product_quantity, item_category
   </sql>
   <select id="selectByExample" parameterType="cn.haizhi.market.main.bean.madao.CartItemExample" resultMap="BaseResultMap">
     select
@@ -66,19 +96,28 @@
     delete from cart_item
     where item_id = #{itemId,jdbcType=VARCHAR}
   </delete>
+  <delete id="deleteByExample" parameterType="cn.haizhi.market.main.bean.madao.CartItemExample">
+    delete from cart_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
   <insert id="insert" parameterType="cn.haizhi.market.main.bean.madao.CartItem">
-    insert into cart_item (item_id, user_id, shop_id, 
-      shop_name, product_id, product_quantity, 
-      item_category)
-    values (#{itemId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, 
-      #{shopName,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, #{productQuantity,jdbcType=INTEGER}, 
-      #{itemCategory,jdbcType=TINYINT})
+    insert into cart_item (item_id, cart_id, user_id, 
+      shop_id, shop_name, product_id, 
+      product_quantity, item_category)
+    values (#{itemId,jdbcType=VARCHAR}, #{cartId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{shopId,jdbcType=BIGINT}, #{shopName,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, 
+      #{productQuantity,jdbcType=INTEGER}, #{itemCategory,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="cn.haizhi.market.main.bean.madao.CartItem">
     insert into cart_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="itemId != null">
         item_id,
+      </if>
+      <if test="cartId != null">
+        cart_id,
       </if>
       <if test="userId != null">
         user_id,
@@ -102,6 +141,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="itemId != null">
         #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="cartId != null">
+        #{cartId,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=BIGINT},
@@ -129,9 +171,58 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cart_item
+    <set>
+      <if test="record.itemId != null">
+        item_id = #{record.itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cartId != null">
+        cart_id = #{record.cartId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopId != null">
+        shop_id = #{record.shopId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopName != null">
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=BIGINT},
+      </if>
+      <if test="record.productQuantity != null">
+        product_quantity = #{record.productQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemCategory != null">
+        item_category = #{record.itemCategory,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cart_item
+    set item_id = #{record.itemId,jdbcType=VARCHAR},
+      cart_id = #{record.cartId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      shop_id = #{record.shopId,jdbcType=BIGINT},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      product_id = #{record.productId,jdbcType=BIGINT},
+      product_quantity = #{record.productQuantity,jdbcType=INTEGER},
+      item_category = #{record.itemCategory,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="cn.haizhi.market.main.bean.madao.CartItem">
     update cart_item
     <set>
+      <if test="cartId != null">
+        cart_id = #{cartId,jdbcType=VARCHAR},
+      </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
       </if>
@@ -155,7 +246,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.haizhi.market.main.bean.madao.CartItem">
     update cart_item
-    set user_id = #{userId,jdbcType=BIGINT},
+    set cart_id = #{cartId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
       shop_id = #{shopId,jdbcType=BIGINT},
       shop_name = #{shopName,jdbcType=VARCHAR},
       product_id = #{productId,jdbcType=BIGINT},

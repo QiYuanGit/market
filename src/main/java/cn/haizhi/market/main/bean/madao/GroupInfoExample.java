@@ -132,63 +132,73 @@ public class GroupInfoExample {
             addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
-        public Criteria andGroupDateIsNull() {
-            addCriterion("group_date is null");
+        public Criteria andGroupInfoIdIsNull() {
+            addCriterion("group_info_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateIsNotNull() {
-            addCriterion("group_date is not null");
+        public Criteria andGroupInfoIdIsNotNull() {
+            addCriterion("group_info_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateEqualTo(Date value) {
-            addCriterionForJDBCDate("group_date =", value, "groupDate");
+        public Criteria andGroupInfoIdEqualTo(String value) {
+            addCriterion("group_info_id =", value, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("group_date <>", value, "groupDate");
+        public Criteria andGroupInfoIdNotEqualTo(String value) {
+            addCriterion("group_info_id <>", value, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateGreaterThan(Date value) {
-            addCriterionForJDBCDate("group_date >", value, "groupDate");
+        public Criteria andGroupInfoIdGreaterThan(String value) {
+            addCriterion("group_info_id >", value, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("group_date >=", value, "groupDate");
+        public Criteria andGroupInfoIdGreaterThanOrEqualTo(String value) {
+            addCriterion("group_info_id >=", value, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateLessThan(Date value) {
-            addCriterionForJDBCDate("group_date <", value, "groupDate");
+        public Criteria andGroupInfoIdLessThan(String value) {
+            addCriterion("group_info_id <", value, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("group_date <=", value, "groupDate");
+        public Criteria andGroupInfoIdLessThanOrEqualTo(String value) {
+            addCriterion("group_info_id <=", value, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateIn(List<Date> values) {
-            addCriterionForJDBCDate("group_date in", values, "groupDate");
+        public Criteria andGroupInfoIdLike(String value) {
+            addCriterion("group_info_id like", value, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("group_date not in", values, "groupDate");
+        public Criteria andGroupInfoIdNotLike(String value) {
+            addCriterion("group_info_id not like", value, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("group_date between", value1, value2, "groupDate");
+        public Criteria andGroupInfoIdIn(List<String> values) {
+            addCriterion("group_info_id in", values, "groupInfoId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupDateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("group_date not between", value1, value2, "groupDate");
+        public Criteria andGroupInfoIdNotIn(List<String> values) {
+            addCriterion("group_info_id not in", values, "groupInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupInfoIdBetween(String value1, String value2) {
+            addCriterion("group_info_id between", value1, value2, "groupInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupInfoIdNotBetween(String value1, String value2) {
+            addCriterion("group_info_id not between", value1, value2, "groupInfoId");
             return (Criteria) this;
         }
 
@@ -249,6 +259,66 @@ public class GroupInfoExample {
 
         public Criteria andGroupNumNotBetween(Integer value1, Integer value2) {
             addCriterion("group_num not between", value1, value2, "groupNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateIsNull() {
+            addCriterion("group_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateIsNotNull() {
+            addCriterion("group_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateEqualTo(Date value) {
+            addCriterionForJDBCDate("group_date =", value, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("group_date <>", value, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateGreaterThan(Date value) {
+            addCriterionForJDBCDate("group_date >", value, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("group_date >=", value, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateLessThan(Date value) {
+            addCriterionForJDBCDate("group_date <", value, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("group_date <=", value, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateIn(List<Date> values) {
+            addCriterionForJDBCDate("group_date in", values, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("group_date not in", values, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("group_date between", value1, value2, "groupDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("group_date not between", value1, value2, "groupDate");
             return (Criteria) this;
         }
     }

@@ -25,6 +25,8 @@
             <tx:method name="create*"/>
             <tx:method name="delete*"/>
             <tx:method name="update*"/>
+            <tx:method name="increase*"/>
+            <tx:method name="decrease*"/>
             <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
             <tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
             <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>

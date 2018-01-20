@@ -2,6 +2,8 @@ package cn.haizhi.market.main.bean.madao;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class OrderItem {
     private String itemId;
@@ -12,7 +14,7 @@ public class OrderItem {
 
     private String productName;
 
-    private Long productPrice;
+    private BigDecimal productPrice;
 
     private Integer productQuantity;
 
@@ -20,20 +22,4 @@ public class OrderItem {
 
     private String productIcon;
 
-    private String itemRemark;
-
-    public OrderItem(String itemId, String orderId, Long productId, String productName, Long productPrice, Integer productQuantity, String productDesc, String productIcon, String itemRemark) {
-        this.itemId = itemId;
-        this.orderId = orderId;
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productQuantity = productQuantity;
-        this.productDesc = productDesc;
-        this.productIcon = productIcon;
-        this.itemRemark = itemRemark;
-    }
-
-    public OrderItem() {
-    }
 }

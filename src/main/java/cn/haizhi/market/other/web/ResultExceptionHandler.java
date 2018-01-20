@@ -3,6 +3,7 @@ package cn.haizhi.market.other.web;
 
 import cn.haizhi.market.main.view.ResultView;
 import cn.haizhi.market.other.enums.ResultEnum;
+import cn.haizhi.market.other.exception.MadaoException;
 import cn.haizhi.market.other.exception.ResultException;
 import cn.haizhi.market.other.exception.qiyuan.QiException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,14 +32,17 @@ public class ResultExceptionHandler implements HandlerExceptionResolver {
             resultView.setCode(qiException.getCode());
             resultView.setHint(qiException.getHint());
             System.out.println(qiException.getHint());
-        }
-        if(exception instanceof ResultException){
+        }else if(exception instanceof MadaoException){
             ResultException resultException = (ResultException) exception;
             resultView.setCode(ResultEnum.FAILURE_RESULT.getCode());
             resultView.setHint(ResultEnum.FAILURE_RESULT.getHint()+resultException.getHint());
             System.out.println(resultException.getHint());
-        }
-        if(!(exception instanceof QiException || exception instanceof ResultException)){
+        }else if(exception instanceof ResultException){
+            ResultException resultException = (ResultException) exception;
+            resultView.setCode(ResultEnum.FAILURE_RESULT.getCode());
+            resultView.setHint(ResultEnum.FAILURE_RESULT.getHint()+resultException.getHint());
+            System.out.println(resultException.getHint());
+        }else{
             resultView.setCode(ResultEnum.ERROR_RESULT.getCode());
             resultView.setHint(ResultEnum.ERROR_RESULT.getHint());
             exception.printStackTrace();

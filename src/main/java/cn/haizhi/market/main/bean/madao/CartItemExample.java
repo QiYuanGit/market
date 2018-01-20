@@ -174,6 +174,76 @@ public class CartItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andCartIdIsNull() {
+            addCriterion("cart_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdIsNotNull() {
+            addCriterion("cart_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdEqualTo(String value) {
+            addCriterion("cart_id =", value, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdNotEqualTo(String value) {
+            addCriterion("cart_id <>", value, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdGreaterThan(String value) {
+            addCriterion("cart_id >", value, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdGreaterThanOrEqualTo(String value) {
+            addCriterion("cart_id >=", value, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdLessThan(String value) {
+            addCriterion("cart_id <", value, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdLessThanOrEqualTo(String value) {
+            addCriterion("cart_id <=", value, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdLike(String value) {
+            addCriterion("cart_id like", value, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdNotLike(String value) {
+            addCriterion("cart_id not like", value, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdIn(List<String> values) {
+            addCriterion("cart_id in", values, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdNotIn(List<String> values) {
+            addCriterion("cart_id not in", values, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdBetween(String value1, String value2) {
+            addCriterion("cart_id between", value1, value2, "cartId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCartIdNotBetween(String value1, String value2) {
+            addCriterion("cart_id not between", value1, value2, "cartId");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdIsNull() {
             addCriterion("user_id is null");
             return (Criteria) this;

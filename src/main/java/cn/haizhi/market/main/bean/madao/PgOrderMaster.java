@@ -1,5 +1,9 @@
 package cn.haizhi.market.main.bean.madao;
 
+import cn.haizhi.market.other.enums.madao.CommentStatusEnum;
+import cn.haizhi.market.other.enums.madao.DeliveryStatusEnum;
+import cn.haizhi.market.other.enums.madao.OrderStatusEnum;
+import cn.haizhi.market.other.enums.madao.PayStatusEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -19,15 +23,19 @@ public class PgOrderMaster {
 
     private String userAddress;
 
+    private BigDecimal productAmount;
+
+    private BigDecimal sendPrice;
+
     private BigDecimal orderAmount;
 
-    private Byte orderStatus;
+    private Byte orderStatus = OrderStatusEnum.NEW.getCode();
 
-    private Byte payStatus;
+    private Byte payStatus = PayStatusEnum.WAIT.getCode();
 
-    private Byte deliveryStatus;
+    private Byte deliveryStatus = DeliveryStatusEnum.WAIT.getCode();
 
-    private Byte commentStatus;
+    private Byte commentStatus = CommentStatusEnum.WAIT.getCode();
 
     private Byte payWay;
 
@@ -35,7 +43,16 @@ public class PgOrderMaster {
 
     private Date deliveryTime;
 
+    private Date arriveTime;
+
+    private Date receiveTime;
+
+    private Long commentId;
+
     private Date createTime;
 
     private Date updateTime;
+
+    private String orderRemark;
+
 }
