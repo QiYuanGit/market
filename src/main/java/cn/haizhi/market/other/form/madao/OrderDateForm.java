@@ -2,10 +2,7 @@ package cn.haizhi.market.other.form.madao;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.junit.After;
-
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 @Data
