@@ -2,6 +2,8 @@ package cn.haizhi.market.main.mapper.qiyuan;
 
 import cn.haizhi.market.main.bean.qiyuan.User;
 import cn.haizhi.market.main.bean.qiyuan.UserExample;
+import cn.haizhi.market.main.view.qiyuan.UserView;
+
 import java.util.List;
 
 public interface UserMapper {
@@ -20,4 +22,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    UserView getUserWithAddress(Long id);
 }

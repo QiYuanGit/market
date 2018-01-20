@@ -7,11 +7,10 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-
 @Data
 @EqualsAndHashCode(callSuper=true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class User extends BaseBean {
+public class User extends BaseBean{
     private Long userId;
 
     private String userName;
@@ -20,13 +19,8 @@ public class User extends BaseBean {
 
     private String userHeadPath;
 
-    private String signature;
-
     private Date register;
 
     private String userPhone;
-
-    private String defaultAddress;
-
 
 }

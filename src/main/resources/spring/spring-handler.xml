@@ -32,9 +32,14 @@
             <mvc:mapping path="/"/>
             <bean class="cn.haizhi.market.other.inters.BaseInterceptor"/>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/order/**"/>
+            <mvc:mapping path="/pgOrder/**"/>
+            <bean class="cn.haizhi.market.other.inters.qiyuan.LoginInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
     <!-- 配置文件上传 -->
-    <bean id="commonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="utf-8" />
         <property name="maxUploadSize" value="104857600"/>
         <property name="maxInMemorySize" value="4096"/>

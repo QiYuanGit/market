@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.haizhi.market.main.mapper.qiyuan.UserMapper">
+
+  <resultMap id="userWithAddres" type="cn.haizhi.market.main.view.qiyuan.UserView">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_head_path" jdbcType="VARCHAR" property="userHeadPath" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <collection property="userAddresses" ofType="cn.haizhi.market.main.view.qiyuan.UserAddressView">
+      <id column="address_id" jdbcType="BIGINT" property="addressId" />
+      <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+      <result column="phone" jdbcType="VARCHAR" property="phone" />
+      <result column="user_id" jdbcType="BIGINT" property="userId" />
+      <result column="house_number" jdbcType="VARCHAR" property="houseNumber" />
+      <result column="Is_default" jdbcType="BIT" property="isDefault" />
+      <result column="consignee" jdbcType="VARCHAR" property="consignee" />
+    </collection>
+  </resultMap>
+  <select id="getUserWithAddress" parameterType="java.lang.Long" resultMap="userWithAddres">
+    SELECT a.user_id,a.user_name,a.user_head_path,a.user_phone,
+    b.address_id,b.user_address,b.phone,b.user_id,b.house_number,b.Is_default,b.consignee
+    FROM user a LEFT JOIN user_address b ON a.user_id = b.user_id
+    WHERE a.user_id = #{id}
+  </select>
+
   <resultMap id="BaseResultMap" type="cn.haizhi.market.main.bean.qiyuan.User">
     <id column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
     <result column="user_head_path" jdbcType="VARCHAR" property="userHeadPath" />
-    <result column="signature" jdbcType="VARCHAR" property="signature" />
     <result column="register" jdbcType="TIMESTAMP" property="register" />
     <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
-    <result column="default_address" jdbcType="VARCHAR" property="defaultAddress" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -41,8 +62,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    user_id, user_name, user_password, user_head_path, signature, register, user_phone, 
-    default_address
+    user_id, user_name, user_password, user_head_path, register, user_phone
   </sql>
   <select id="selectByExample" parameterType="cn.haizhi.market.main.bean.qiyuan.UserExample" resultMap="BaseResultMap">
     select
@@ -70,11 +90,11 @@
   </delete>
   <insert id="insert" parameterType="cn.haizhi.market.main.bean.qiyuan.User">
     insert into user (user_id, user_name, user_password, 
-      user_head_path, signature, register, 
-      user_phone, default_address)
+      user_head_path, register, user_phone
+      )
     values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
-      #{userHeadPath,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, #{register,jdbcType=TIMESTAMP}, 
-      #{userPhone,jdbcType=VARCHAR}, #{defaultAddress,jdbcType=VARCHAR})
+      #{userHeadPath,jdbcType=VARCHAR}, #{register,jdbcType=TIMESTAMP}, #{userPhone,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.haizhi.market.main.bean.qiyuan.User">
     insert into user
@@ -91,17 +111,11 @@
       <if test="userHeadPath != null">
         user_head_path,
       </if>
-      <if test="signature != null">
-        signature,
-      </if>
       <if test="register != null">
         register,
       </if>
       <if test="userPhone != null">
         user_phone,
-      </if>
-      <if test="defaultAddress != null">
-        default_address,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -117,17 +131,11 @@
       <if test="userHeadPath != null">
         #{userHeadPath,jdbcType=VARCHAR},
       </if>
-      <if test="signature != null">
-        #{signature,jdbcType=VARCHAR},
-      </if>
       <if test="register != null">
         #{register,jdbcType=TIMESTAMP},
       </if>
       <if test="userPhone != null">
         #{userPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="defaultAddress != null">
-        #{defaultAddress,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -149,17 +157,11 @@
       <if test="userHeadPath != null">
         user_head_path = #{userHeadPath,jdbcType=VARCHAR},
       </if>
-      <if test="signature != null">
-        signature = #{signature,jdbcType=VARCHAR},
-      </if>
       <if test="register != null">
         register = #{register,jdbcType=TIMESTAMP},
       </if>
       <if test="userPhone != null">
         user_phone = #{userPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="defaultAddress != null">
-        default_address = #{defaultAddress,jdbcType=VARCHAR},
       </if>
     </set>
     where user_id = #{userId,jdbcType=BIGINT}
@@ -169,10 +171,8 @@
     set user_name = #{userName,jdbcType=VARCHAR},
       user_password = #{userPassword,jdbcType=VARCHAR},
       user_head_path = #{userHeadPath,jdbcType=VARCHAR},
-      signature = #{signature,jdbcType=VARCHAR},
       register = #{register,jdbcType=TIMESTAMP},
-      user_phone = #{userPhone,jdbcType=VARCHAR},
-      default_address = #{defaultAddress,jdbcType=VARCHAR}
+      user_phone = #{userPhone,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
 </mapper>

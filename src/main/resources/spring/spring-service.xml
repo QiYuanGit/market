@@ -32,6 +32,6 @@
     </tx:advice>
     <!-- 配置事务切面 -->
     <aop:config>
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.haizhi.market.main.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* cn.haizhi.market.main.service..*.*(..))"/>
     </aop:config>
 </beans>
