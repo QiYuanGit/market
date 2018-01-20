@@ -273,10 +273,10 @@ public class UserService {
         //2、上传图片
         if(file != null && originnalFilename !=null && originnalFilename.length()>0){
             //存储图片的路径
-            String path = request.getServletContext().getRealPath("/");
+            String path = request.getServletContext().getRealPath(File.separator);
             //新的图片名称
             String newFileName = UUID.randomUUID()+originnalFilename.substring(originnalFilename.lastIndexOf("."));
-            File newFile = new File(path+"\\HeadPic\\"+newFileName);
+            File newFile = new File(path+ File.separatorChar+ "HeadPic"+ File.separatorChar+ newFileName);
             if(!newFile.exists()){
                 newFile.mkdir();
             }
