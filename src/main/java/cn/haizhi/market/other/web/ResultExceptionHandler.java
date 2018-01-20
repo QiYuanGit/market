@@ -33,10 +33,10 @@ public class ResultExceptionHandler implements HandlerExceptionResolver {
             resultView.setHint(qiException.getHint());
             System.out.println(qiException.getHint());
         }else if(exception instanceof MadaoException){
-            ResultException resultException = (ResultException) exception;
+            MadaoException resultException = (MadaoException) exception;
             resultView.setCode(ResultEnum.FAILURE_RESULT.getCode());
-            resultView.setHint(ResultEnum.FAILURE_RESULT.getHint()+resultException.getHint());
-            System.out.println(resultException.getHint());
+            resultView.setHint(ResultEnum.FAILURE_RESULT.getHint()+resultException.getMessage());
+            System.out.println(resultException.getMessage());
         }else if(exception instanceof ResultException){
             ResultException resultException = (ResultException) exception;
             resultView.setCode(ResultEnum.FAILURE_RESULT.getCode());
