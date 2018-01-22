@@ -11,7 +11,7 @@ import java.util.List;
 public class GroupDTO {
     private String groupId;
 
-    private Long userId;
+    private String leadMemberId;
 
     private Integer groupNum;
 

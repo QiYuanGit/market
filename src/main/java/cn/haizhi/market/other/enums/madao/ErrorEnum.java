@@ -46,7 +46,7 @@ public enum ErrorEnum {
     ORDER_CANCEL_FAIL(428, "订单取消失败"),
     ORDER_NOT_CANCEL(429, "订单未取消"),
 
-    GROUP_INFO_ERROR(430, "拼购组信息未设置"),
+    GROUP_INFO_ERROR(430, "商家未设置拼购组信息"),
     GROUP_NOT_EXIST(431, "拼购组不存在"),
     GROUP_NOT_ACTIVE(432, "拼购组已过期"),
     GROUP_GROUP_FULL(433, "拼购组已满"),
@@ -59,6 +59,7 @@ public enum ErrorEnum {
 
     CONFIRM_CANCEL_FAIL(437, "确认取消订单失败"),
     CONFIRM_RECEIVE_FAIL(438, "确认收货失败"),
+    USER_HAVE_ORDER_IN_GROUP(439, "用户已经有订单在该组中"),
     ;
 
     private int code;

@@ -4,11 +4,10 @@
   <resultMap id="BaseResultMap" type="cn.haizhi.market.main.bean.madao.PgGroup">
     <id column="group_id" jdbcType="VARCHAR" property="groupId" />
     <result column="lead_member_id" jdbcType="VARCHAR" property="leadMemberId" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="group_num" jdbcType="INTEGER" property="groupNum" />
     <result column="group_count" jdbcType="INTEGER" property="groupCount" />
     <result column="group_status" jdbcType="TINYINT" property="groupStatus" />
-    <result column="dead_date" jdbcType="DATE" property="deadDate" />
+    <result column="dead_date" jdbcType="TIMESTAMP" property="deadDate" />
     <result column="active_status" jdbcType="TINYINT" property="activeStatus" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -72,8 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    group_id, lead_member_id, user_id, group_num, group_count, group_status, dead_date, 
-    active_status, create_time, update_time
+    group_id, lead_member_id, group_num, group_count, group_status, dead_date, active_status, 
+    create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="cn.haizhi.market.main.bean.madao.PgGroupExample" resultMap="BaseResultMap">
     select
@@ -106,14 +105,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.haizhi.market.main.bean.madao.PgGroup">
-    insert into pg_group (group_id, lead_member_id, user_id, 
-      group_num, group_count, group_status, 
-      dead_date, active_status, create_time, 
-      update_time)
-    values (#{groupId,jdbcType=VARCHAR}, #{leadMemberId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
-      #{groupNum,jdbcType=INTEGER}, #{groupCount,jdbcType=INTEGER}, #{groupStatus,jdbcType=TINYINT}, 
-      #{deadDate,jdbcType=DATE}, #{activeStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into pg_group (group_id, lead_member_id, group_num, 
+      group_count, group_status, dead_date, 
+      active_status, create_time, update_time
+      )
+    values (#{groupId,jdbcType=VARCHAR}, #{leadMemberId,jdbcType=VARCHAR}, #{groupNum,jdbcType=INTEGER}, 
+      #{groupCount,jdbcType=INTEGER}, #{groupStatus,jdbcType=TINYINT}, #{deadDate,jdbcType=TIMESTAMP}, 
+      #{activeStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.haizhi.market.main.bean.madao.PgGroup">
     insert into pg_group
@@ -123,9 +122,6 @@
       </if>
       <if test="leadMemberId != null">
         lead_member_id,
-      </if>
-      <if test="userId != null">
-        user_id,
       </if>
       <if test="groupNum != null">
         group_num,
@@ -156,9 +152,6 @@
       <if test="leadMemberId != null">
         #{leadMemberId,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
-      </if>
       <if test="groupNum != null">
         #{groupNum,jdbcType=INTEGER},
       </if>
@@ -169,7 +162,7 @@
         #{groupStatus,jdbcType=TINYINT},
       </if>
       <if test="deadDate != null">
-        #{deadDate,jdbcType=DATE},
+        #{deadDate,jdbcType=TIMESTAMP},
       </if>
       <if test="activeStatus != null">
         #{activeStatus,jdbcType=TINYINT},
@@ -197,9 +190,6 @@
       <if test="record.leadMemberId != null">
         lead_member_id = #{record.leadMemberId,jdbcType=VARCHAR},
       </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=BIGINT},
-      </if>
       <if test="record.groupNum != null">
         group_num = #{record.groupNum,jdbcType=INTEGER},
       </if>
@@ -210,7 +200,7 @@
         group_status = #{record.groupStatus,jdbcType=TINYINT},
       </if>
       <if test="record.deadDate != null">
-        dead_date = #{record.deadDate,jdbcType=DATE},
+        dead_date = #{record.deadDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.activeStatus != null">
         active_status = #{record.activeStatus,jdbcType=TINYINT},
@@ -230,11 +220,10 @@
     update pg_group
     set group_id = #{record.groupId,jdbcType=VARCHAR},
       lead_member_id = #{record.leadMemberId,jdbcType=VARCHAR},
-      user_id = #{record.userId,jdbcType=BIGINT},
       group_num = #{record.groupNum,jdbcType=INTEGER},
       group_count = #{record.groupCount,jdbcType=INTEGER},
       group_status = #{record.groupStatus,jdbcType=TINYINT},
-      dead_date = #{record.deadDate,jdbcType=DATE},
+      dead_date = #{record.deadDate,jdbcType=TIMESTAMP},
       active_status = #{record.activeStatus,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
@@ -248,9 +237,6 @@
       <if test="leadMemberId != null">
         lead_member_id = #{leadMemberId,jdbcType=VARCHAR},
       </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
       <if test="groupNum != null">
         group_num = #{groupNum,jdbcType=INTEGER},
       </if>
@@ -261,7 +247,7 @@
         group_status = #{groupStatus,jdbcType=TINYINT},
       </if>
       <if test="deadDate != null">
-        dead_date = #{deadDate,jdbcType=DATE},
+        dead_date = #{deadDate,jdbcType=TIMESTAMP},
       </if>
       <if test="activeStatus != null">
         active_status = #{activeStatus,jdbcType=TINYINT},
@@ -278,11 +264,10 @@
   <update id="updateByPrimaryKey" parameterType="cn.haizhi.market.main.bean.madao.PgGroup">
     update pg_group
     set lead_member_id = #{leadMemberId,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=BIGINT},
       group_num = #{groupNum,jdbcType=INTEGER},
       group_count = #{groupCount,jdbcType=INTEGER},
       group_status = #{groupStatus,jdbcType=TINYINT},
-      dead_date = #{deadDate,jdbcType=DATE},
+      dead_date = #{deadDate,jdbcType=TIMESTAMP},
       active_status = #{activeStatus,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

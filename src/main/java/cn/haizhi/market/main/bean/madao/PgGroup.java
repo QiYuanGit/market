@@ -1,16 +1,16 @@
 package cn.haizhi.market.main.bean.madao;
 
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Date;
 
 @Data
+@DynamicUpdate
 public class PgGroup {
     private String groupId;
 
     private String leadMemberId;
-
-    private Long userId;
 
     private Integer groupNum;
 
@@ -26,4 +26,7 @@ public class PgGroup {
 
     private Date updateTime;
 
+    public String getGroupId() {
+        return groupId;
+    }
 }

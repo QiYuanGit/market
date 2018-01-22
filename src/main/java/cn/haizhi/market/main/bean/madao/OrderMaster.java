@@ -5,11 +5,13 @@ import cn.haizhi.market.other.enums.madao.DeliveryStatusEnum;
 import cn.haizhi.market.other.enums.madao.OrderStatusEnum;
 import cn.haizhi.market.other.enums.madao.PayStatusEnum;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
+@DynamicUpdate
 public class OrderMaster {
     private String orderId;
 

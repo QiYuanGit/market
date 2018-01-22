@@ -54,7 +54,7 @@ public class OrderService {
         //检查地址是否正确
         if (address==null || address.getUserId() != orderForm.getUserId()) {
             log.error("用户地址信息错误");
-            throw new MadaoException(ErrorEnum.ADDRESS_ERROR, orderForm.getAddressId());
+            throw new MadaoException(ErrorEnum.ADDRESS_ERROR, IdResultMap.getIdMap(orderForm.getAddressId()));
         }
         //获取该订单的所有购物车项
         List<CartItemDTO> pgCartItemDTOList = commonMapper.getCartItemDTOByCartItemIdList(orderForm.getCartItemIdList());
@@ -71,7 +71,7 @@ public class OrderService {
 
         //处理拼购订单
         String orderId = KeyUtil.genUniquKey();
-        BigDecimal orderAmount = BigDecimal.ZERO;
+        BigDecimal productAmount = BigDecimal.ZERO;
 
         ArrayList<String> id = new ArrayList<>();
         for (CartItemDTO cartItemDTO : pgCartItemDTOList) {
@@ -80,7 +80,7 @@ public class OrderService {
                 log.error("【Error】 = {}", ErrorEnum.CARTITEM_CATEGORY_ERROR.getMessage());
                 id.add(cartItemDTO.getItemId());
             }
-            orderAmount = orderAmount.add(cartItemDTO.getDiscountPrice().multiply(BigDecimal.valueOf(cartItemDTO.getProductQuantity())));
+            productAmount = productAmount.add(cartItemDTO.getDiscountPrice().multiply(BigDecimal.valueOf(cartItemDTO.getProductQuantity())));
             OrderItem orderItem = new OrderItem();
             BeanUtils.copyProperties(cartItemDTO, orderItem);
             orderItem.setItemId(KeyUtil.genUniquKey());
@@ -99,7 +99,8 @@ public class OrderService {
         pgOrderMaster.setUserName(orderForm.getUserName());
         pgOrderMaster.setUserPhone(address.getPhone());
         pgOrderMaster.setUserAddress(address.getUserAddress());
-        pgOrderMaster.setOrderAmount(orderAmount);
+        pgOrderMaster.setProductAmount(productAmount);
+        pgOrderMaster.setOrderAmount(productAmount);
         pgOrderMaster.setOrderId(orderId);
 
         pgOrderMasterMapper.insertSelective(pgOrderMaster);
@@ -324,36 +325,36 @@ public class OrderService {
     }
 
     //用户支付普通订单
-    public List<OrderDTO> payOrder(Long userId, List<String> orderIdList){
-        List<OrderDTO> orderDTOList = getOrderDTObyIdList(orderIdList);
+    public void payOrder(Long userId, List<String> orderIdList){
+        List<OrderMaster> orderMasterList = getOrderMaserByIdList(orderIdList);
         BigDecimal amount = BigDecimal.ZERO;
         //Todo 批处理
         // 得出所有异常，一次返回
         Map<ErrorEnum, List<String>> map = new HashMap<>();
-        for(OrderDTO orderDTO: orderDTOList) {
-            if (!orderDTO.getUserId().equals(userId)) {
+        for(OrderMaster orderMaster: orderMasterList) {
+            if (!orderMaster.getUserId().equals(userId)) {
                 if (!map.containsKey(ErrorEnum.ORDER_OWNER_ERROR)) {
                     map.put(ErrorEnum.ORDER_OWNER_ERROR, new ArrayList<>());
                 }
-                map.get(ErrorEnum.ORDER_OWNER_ERROR).add(orderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_OWNER_ERROR).add(orderMaster.getOrderId());
                 log.error("【异常】={}", ErrorEnum.ORDER_OWNER_ERROR.getMessage());
             }
-            if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+            if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
                 log.error("【异常】={}", ErrorEnum.ORDER_STATUS_ERROR.getMessage());
                 if (!map.containsKey(ErrorEnum.ORDER_STATUS_ERROR)) {
                     map.put(ErrorEnum.ORDER_STATUS_ERROR, new ArrayList<>());
                 }
-                map.get(ErrorEnum.ORDER_STATUS_ERROR).add(orderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_STATUS_ERROR).add(orderMaster.getOrderId());
             }
-            if (!orderDTO.getPayStatus().equals(PayStatusEnum.WAIT.getCode())) {
+            if (!orderMaster.getPayStatus().equals(PayStatusEnum.WAIT.getCode())) {
                 log.error("【异常】={}", ErrorEnum.ORDER_PAY_STATUS_ERROR.getMessage());
                 if (!map.containsKey(ErrorEnum.ORDER_PAY_STATUS_ERROR)) {
                     map.put(ErrorEnum.ORDER_PAY_STATUS_ERROR, new ArrayList<>());
                 }
-                map.get(ErrorEnum.ORDER_PAY_STATUS_ERROR).add(orderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_PAY_STATUS_ERROR).add(orderMaster.getOrderId());
             }
 
-            amount = amount.add(orderDTO.getOrderAmount());
+            amount = amount.add(orderMaster.getOrderAmount());
         }
         //如果有错误，抛出异常
         if(map.size()!=0){
@@ -364,40 +365,39 @@ public class OrderService {
 
 
         //更新订单
-        OrderMaster orderMaster = new OrderMaster();
-        for(OrderDTO orderDTO: orderDTOList){
-            orderDTO.setPayStatus(PayStatusEnum.SUCCESS.getCode());
-            BeanUtils.copyProperties(orderDTO, orderMaster);
+        for(OrderMaster orderMaster: orderMasterList){
+            orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());
             orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
         }
-        return orderDTOList;
     }
 
+
+
     //用户支付拼购订单
-    public List<PgOrderDTO> payPgOrder(Long userId, List<String> orderIdList) {
-        List<PgOrderDTO> pgOrderDTOList = getPgOrderDTObyIdList(orderIdList);
+    public void payPgOrder(Long userId, List<String> orderIdList) {
+        List<PgOrderMaster> pgOrderMasterList = getPgOrderMasterByIdList(orderIdList);
         BigDecimal amount = BigDecimal.ZERO;
         Map<ErrorEnum, List<String>> map = new HashMap<>();
-        for(PgOrderDTO pgOrderDTO: pgOrderDTOList){
-            if(!pgOrderDTO.getUserId().equals(userId)){
+        for(PgOrderMaster pgOrderMaster: pgOrderMasterList){
+            if(!pgOrderMaster.getUserId().equals(userId)){
                 if(!map.containsKey(ErrorEnum.ORDER_OWNER_ERROR)){
                     map.put(ErrorEnum.ORDER_OWNER_ERROR, new ArrayList<>());
                 }
-                map.get(ErrorEnum.ORDER_OWNER_ERROR).add(pgOrderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_OWNER_ERROR).add(pgOrderMaster.getOrderId());
             }
-            if(!pgOrderDTO.getOrderStatus().equals( PgOrderEnum.NEW.getCode())){
+            if(!pgOrderMaster.getOrderStatus().equals( PgOrderEnum.NEW.getCode())){
                 if(!map.containsKey(ErrorEnum.ORDER_STATUS_ERROR)){
                     map.put(ErrorEnum.ORDER_STATUS_ERROR, new ArrayList<>());
                 }
-                map.get(ErrorEnum.ORDER_STATUS_ERROR).add(pgOrderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_STATUS_ERROR).add(pgOrderMaster.getOrderId());
             }
-            if(!pgOrderDTO.getPayStatus().equals(PayStatusEnum.WAIT.getCode())){
+            if(!pgOrderMaster.getPayStatus().equals(PayStatusEnum.WAIT.getCode())){
                 if(!map.containsKey(ErrorEnum.ORDER_PAY_STATUS_ERROR)){
                     map.put(ErrorEnum.ORDER_PAY_STATUS_ERROR, new ArrayList<>());
                 }
-                map.get(ErrorEnum.ORDER_PAY_STATUS_ERROR).add(pgOrderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_PAY_STATUS_ERROR).add(pgOrderMaster.getOrderId());
             }
-            amount = amount.add(pgOrderDTO.getOrderAmount());
+            amount = amount.add(pgOrderMaster.getOrderAmount());
         }
 
         if (map.size()>0){
@@ -406,51 +406,47 @@ public class OrderService {
 
         //Todo 支付
 
-        PgOrderMaster pgOrderMaster = new PgOrderMaster();
-        for(PgOrderDTO pgOrderDTO: pgOrderDTOList){
-            pgOrderDTO.setPayStatus(PayStatusEnum.SUCCESS.getCode());
-            BeanUtils.copyProperties(pgOrderDTO, pgOrderMaster);
+        for(PgOrderMaster pgOrderMaster: pgOrderMasterList){
+            pgOrderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());
             pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
         }
-        return pgOrderDTOList;
     }
 
-    //用户取消普通订单
-    public List<OrderDTO> cancelOrderByUser(Long userId, List<String> orderIdList){
-        List<OrderDTO> orderDTOList = getOrderDTObyIdList(orderIdList);
-        OrderMaster orderMaster = new OrderMaster();
-        List<OrderItem> orderItemList = new ArrayList<>();
+
+    //用户发起取消普通订单
+    public List<OrderMaster> cancelOrderByUser(Long userId, List<String> orderIdList){
+        List<OrderMaster> orderMasterList = getOrderMaserByIdList(orderIdList);
+
         Map<ErrorEnum, List<String>> map = new HashMap<>();
-        for(OrderDTO orderDTO: orderDTOList ){
-            if(!orderDTO.getUserId().equals(userId)){
+        for(OrderMaster orderMaster: orderMasterList ){
+            if(!orderMaster.getUserId().equals(userId)){
                 log.error("【异常】={}", ErrorEnum.ORDER_OWNER_ERROR.getMessage());
                 if(!map.containsKey(ErrorEnum.ORDER_OWNER_ERROR))
                     map.put(ErrorEnum.ORDER_OWNER_ERROR, new ArrayList<>());
-                map.get(ErrorEnum.ORDER_OWNER_ERROR).add(orderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_OWNER_ERROR).add(orderMaster.getOrderId());
             }
-            if(orderDTO.getOrderStatus().equals(OrderStatusEnum.TO_CANCEL.getCode()) || orderDTO.getOrderStatus().equals(OrderStatusEnum.CANCEL.getCode())){
+            if(orderMaster.getOrderStatus().equals(OrderStatusEnum.TO_CANCEL.getCode()) || orderMaster.getOrderStatus().equals(OrderStatusEnum.CANCEL.getCode())){
                 log.error("【异常】={}", ErrorEnum.ORDER_STATUS_ERROR.getMessage());
                 if(!map.containsKey(ErrorEnum.ORDER_STATUS_ERROR))
                     map.put(ErrorEnum.ORDER_STATUS_ERROR, new ArrayList<>());
-                map.get(ErrorEnum.ORDER_STATUS_ERROR).add(orderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_STATUS_ERROR).add(orderMaster.getOrderId());
             }
             //如果送达已经超过一天，不能退货
-            if(orderDTO.getArriveTime()!=null && new Date().getTime() - orderDTO.getArriveTime().getTime()>86400000L){
+            if(orderMaster.getArriveTime()!=null && new Date().getTime() - orderMaster.getArriveTime().getTime()>86400000L){
                 if(!map.containsKey(ErrorEnum.ORDER_HAD_OVERDUE))
                     map.put(ErrorEnum.ORDER_HAD_OVERDUE, new ArrayList<>());
-                map.get(ErrorEnum.ORDER_HAD_OVERDUE).add(orderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_HAD_OVERDUE).add(orderMaster.getOrderId());
             }
-            orderItemList.addAll(orderDTO.getOrderItemList());
-            orderDTO.setOrderStatus(OrderStatusEnum.TO_CANCEL.getCode());
-            BeanUtils.copyProperties(orderDTO, orderMaster);
+
+            orderMaster.setOrderStatus(OrderStatusEnum.TO_CANCEL.getCode());
             orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
         }
 
         if(map.size()>0){
             throw new MadaoException(ErrorEnum.ORDER_CANCEL_FAIL, getResultViewList(map));
         }
-        increaseStock(orderItemList);
-        return orderDTOList;
+
+        return orderMasterList;
     }
 
     //退单后加库存操作
@@ -488,7 +484,7 @@ public class OrderService {
 //                    map.put(ErrorEnum.ORDER_HAD_OVERDUE, new ArrayList<>());
 //                map.get(ErrorEnum.ORDER_HAD_OVERDUE).add(orderDTO.getOrderId());
 //            }
-            //如果已经送货完成，不能取消订单
+            //如果已经送货完成，不能取消订单  todo  不确定
             if(orderDTO.getDeliveryStatus().equals(DeliveryStatusEnum.FINSH.getCode())){
                 if(!map.containsKey(ErrorEnum.ORDER_HAD_DELIVERY)){
                     map.put(ErrorEnum.ORDER_HAD_DELIVERY, new ArrayList<>());
@@ -522,49 +518,44 @@ public class OrderService {
         return orderDTOList;
     }
 
-    //用户取消拼购订单
-    public List<PgOrderDTO> cancelPgOrderByUser(Long userId, List<String> pgOrderIdList){
-        List<PgOrderDTO> pgOrderDTOList = getPgOrderDTObyIdList(pgOrderIdList);
-        List<OrderItem> orderItemList = new ArrayList<>();
+    //用户发起取消拼购订单
+    public List<PgOrderMaster> cancelPgOrderByUser(Long userId, List<String> pgOrderIdList){
+        List<PgOrderMaster> pgOrderMasterList = getPgOrderMasterByIdList(pgOrderIdList);
 
-        PgOrderMaster pgOrderMaster = new PgOrderMaster();
         Map<ErrorEnum, List<String>> map = new HashMap<>();
-        for(PgOrderDTO pgOrderDTO: pgOrderDTOList){
-            if(!userId.equals(pgOrderDTO.getUserId())){
+        for(PgOrderMaster pgOrderMaster: pgOrderMasterList){
+            if(!userId.equals(pgOrderMaster.getUserId())){
                 log.error("【异常】={}", ErrorEnum.ORDER_OWNER_ERROR.getMessage());
                 if(!map.containsKey(ErrorEnum.ORDER_OWNER_ERROR))
                     map.put(ErrorEnum.ORDER_OWNER_ERROR, new ArrayList<>());
-                map.get(ErrorEnum.ORDER_OWNER_ERROR).add(pgOrderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_OWNER_ERROR).add(pgOrderMaster.getOrderId());
             }
-            if(pgOrderDTO.getOrderStatus().equals(PgOrderEnum.TO_CANCEL.getCode()) || pgOrderDTO.getOrderStatus().equals(PgOrderEnum.CANCEL.getCode())){
+            if(pgOrderMaster.getOrderStatus().equals(PgOrderEnum.TO_CANCEL.getCode()) || pgOrderMaster.getOrderStatus().equals(PgOrderEnum.CANCEL.getCode())){
                 log.error("【异常】={}", ErrorEnum.ORDER_STATUS_ERROR.getMessage());
                 if(!map.containsKey(ErrorEnum.ORDER_STATUS_ERROR))
                     map.put(ErrorEnum.ORDER_STATUS_ERROR, new ArrayList<>());
-                map.get(ErrorEnum.ORDER_STATUS_ERROR).add(pgOrderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_STATUS_ERROR).add(pgOrderMaster.getOrderId());
             }
             //如果送达已经超过一天，不能退货
-            if(pgOrderDTO.getArriveTime()!=null && new Date().getTime() - pgOrderDTO.getArriveTime().getTime()>86400000L){
+
+            if(pgOrderMaster.getArriveTime()!=null && (new Date().getTime() - pgOrderMaster.getArriveTime().getTime())>86400000L){
                 if(!map.containsKey(ErrorEnum.ORDER_HAD_OVERDUE))
                     map.put(ErrorEnum.ORDER_HAD_OVERDUE, new ArrayList<>());
-                map.get(ErrorEnum.ORDER_HAD_OVERDUE).add(pgOrderDTO.getOrderId());
+                map.get(ErrorEnum.ORDER_HAD_OVERDUE).add(pgOrderMaster.getOrderId());
             }
-            orderItemList.addAll(pgOrderDTO.getOrderItemList());
-            pgOrderDTO.setOrderStatus(OrderStatusEnum.TO_CANCEL.getCode());
-            BeanUtils.copyProperties(pgOrderDTO, pgOrderMaster);
+            pgOrderMaster.setOrderStatus(PgOrderEnum.TO_CANCEL.getCode());
             pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
         }
         if(map.size()>0)
             throw new MadaoException(ErrorEnum.ORDER_CANCEL_FAIL, getResultViewList(map));
-        //加库存
-        increaseStock(orderItemList);
-        return pgOrderDTOList;
+
+        return pgOrderMasterList;
     }
 
     //商家取消拼购订单
     public List<PgOrderDTO> cancelPgOrderByShop(List<String>  pgOrderIdList){
         List<PgOrderDTO> pgOrderDTOList = getPgOrderDTObyIdList(pgOrderIdList);
         List<OrderItem> orderItemList = new ArrayList<>();
-
 
         PgOrderMaster pgOrderMaster = new PgOrderMaster();
         Map<ErrorEnum, List<String>> map = new HashMap<>();
@@ -631,7 +622,7 @@ public class OrderService {
                 map.get(ErrorEnum.ORDER_STATUS_ERROR).add(orderMaster.getOrderId());
             }
             orderMaster.setDeliveryTime(deliveryDate);
-            orderMaster.setArriveTime(arriveDate);
+//            orderMaster.setArriveTime(arriveDate);
             orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
         }
         if(map.size()>0)
@@ -665,7 +656,7 @@ public class OrderService {
                 map.get(ErrorEnum.ORDER_STATUS_ERROR).add(pgOrderMaster.getOrderId());
             }
             pgOrderMaster.setDeliveryTime(deliveryDate);
-            pgOrderMaster.setArriveTime(arriveDate);
+//            pgOrderMaster.setArriveTime(arriveDate);
             pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
         }
         if(map.size()>0)
@@ -724,6 +715,7 @@ public class OrderService {
     }
 
     //用户确认收货 拼购订单
+    @Transactional
     public void confirmPg(Long userId, List<String> orderIdList){
         List<PgOrderMaster> pgOrderMasterList = getPgOrderMasterByIdList(orderIdList);
         Map<ErrorEnum, List<String>> map = new HashMap<>();
@@ -736,14 +728,14 @@ public class OrderService {
                 map.get(ErrorEnum.ORDER_OWNER_ERROR).add(pgOrderMaster.getOrderId());
             }
 
-            if(!pgOrderMaster.getOrderStatus().equals(PgOrderEnum.NEW.getCode())){
+            if(!pgOrderMaster.getOrderStatus().equals(PgOrderEnum.IN_GROUP.getCode())){
                 log.error("【异常】={}", ErrorEnum.ORDER_STATUS_ERROR.getMessage() + pgOrderMaster.getOrderId());
                 if(!map.containsKey(ErrorEnum.ORDER_STATUS_ERROR))
                     map.put(ErrorEnum.ORDER_STATUS_ERROR, new ArrayList<>());
                 map.get(ErrorEnum.ORDER_STATUS_ERROR).add(pgOrderMaster.getOrderId());
             }
             pgOrderMaster.setDeliveryStatus(DeliveryStatusEnum.FINSH.getCode());
-            pgOrderMaster.setOrderStatus(OrderStatusEnum.FINISH.getCode());
+            pgOrderMaster.setOrderStatus(PgOrderEnum.FINISH.getCode());
             pgOrderMaster.setReceiveTime(new Date());
             pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
         }
@@ -752,19 +744,51 @@ public class OrderService {
         }
     }
 
+    //商家设置普通订单到货时间
+    public void confirmArriveByShop(Long shopId, List<String> orderIdList, Long arrive){
+        Date date = new Date(arrive);
+        List<OrderMaster> orderMasterList = getOrderMaserByIdList(orderIdList);
+        Map<ErrorEnum, List<String>> map = new HashMap<>();
+        for(OrderMaster orderMaster: orderMasterList){
+            if(!orderMaster.getShopId().equals(shopId)){
+                if (!map.containsKey(ErrorEnum.ORDER_SHOP_OWNER_ERROR)){
+                    map.put(ErrorEnum.ORDER_SHOP_OWNER_ERROR, new ArrayList<>());
+                }
+                map.get(ErrorEnum.ORDER_SHOP_OWNER_ERROR).add(orderMaster.getOrderId());
+            }
+            orderMaster.setArriveTime(date);
+            orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
+        }
+        if(map.size()>0){
+            throw new MadaoException(ErrorEnum.CONFIRM_RECEIVE_FAIL, getResultViewList(map));
+        }
+    }
+
+
+    public void confirmArriveByShopPg(Long shopId, List<String> orderIdList, Long arrive){
+        Date date = new Date(arrive);
+        List<PgOrderMaster> pgOrderMasterList = getPgOrderMasterByIdList(orderIdList);
+        Map<ErrorEnum, List<String>> map = new HashMap<>();
+        for(PgOrderMaster pgOrderMaster: pgOrderMasterList){
+            pgOrderMaster.setArriveTime(date);
+            pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
+        }
+    }
+
     //商家确认取消普通订单
     public List<OrderDTO> confirmCancel(Long shopId, List<String> orderIdList){
         List<OrderDTO> orderDTOList = getOrderDTObyIdList(orderIdList);
-        Map<ErrorEnum, List<String>> map = new HashMap<>();
         OrderMaster orderMaster = new OrderMaster();
+        List<OrderItem> orderItemList = new ArrayList<>();
+        Map<ErrorEnum, List<String>> map = new HashMap<>();
         for(OrderDTO orderDTO: orderDTOList){
-            if(!orderDTO.getOrderId().equals(shopId)){
+            if(!orderDTO.getShopId().equals(shopId)){
                 if(!map.containsKey(ErrorEnum.ORDER_SHOP_OWNER_ERROR)){
                     map.put(ErrorEnum.ORDER_SHOP_OWNER_ERROR, new ArrayList<>());
                 }
                 map.get(ErrorEnum.ORDER_SHOP_OWNER_ERROR).add(orderDTO.getOrderId());
             }
-            if(!orderDTO.getOrderStatus().equals(OrderStatusEnum.TO_CANCEL)){
+            if(!orderDTO.getOrderStatus().equals(OrderStatusEnum.TO_CANCEL.getCode())){
                 if(!map.containsKey(ErrorEnum.ORDER_STATUS_ERROR))
                     map.put(ErrorEnum.ORDER_STATUS_ERROR, new ArrayList());
                 map.get(ErrorEnum.ORDER_STATUS_ERROR).add(orderDTO.getOrderId());
@@ -772,10 +796,12 @@ public class OrderService {
             orderDTO.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
             BeanUtils.copyProperties(orderDTO, orderMaster);
             orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
+            orderItemList.addAll(orderDTO.getOrderItemList());
         }
         if(map.size()>0)
             throw new MadaoException(ErrorEnum.CONFIRM_CANCEL_FAIL, getResultViewList(map));
-
+        //加库存
+        increaseStock(orderItemList);
         return orderDTOList;
     }
 
@@ -784,6 +810,7 @@ public class OrderService {
         //Todo 对商家的检验
         List<PgOrderDTO> pgOrderDTOList = getPgOrderDTObyIdList(orderIdList);
         PgOrderMaster pgOrderMaster = new PgOrderMaster();
+        List<OrderItem> orderItemList = new ArrayList<>();
         Map<ErrorEnum, List<String>> map = new HashMap<>();
         for(PgOrderDTO pgOrderDTO: pgOrderDTOList){
             if(!pgOrderDTO.getOrderStatus().equals(PgOrderEnum.TO_CANCEL.getCode())){
@@ -795,9 +822,13 @@ public class OrderService {
             pgOrderDTO.setOrderStatus(PgOrderEnum.CANCEL.getCode());
             BeanUtils.copyProperties(pgOrderDTO, pgOrderMaster);
             pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
+            orderItemList.addAll(pgOrderDTO.getOrderItemList());
         }
         if(map.size()>0)
             throw new MadaoException(ErrorEnum.CONFIRM_CANCEL_FAIL, getResultViewList(map));
+
+        //加库存
+        increaseStock(orderItemList);
         return pgOrderDTOList;
     }
 
@@ -822,7 +853,7 @@ public class OrderService {
             throw new MadaoException(ErrorEnum.ORDER_NOT_EXIST, orderId);
         if(!pgOrderMaster.getUserId().equals(userId))
             throw new MadaoException(ErrorEnum.ORDER_OWNER_ERROR, IdResultMap.getIdMap(orderId));
-        if(!pgOrderMaster.getOrderStatus().equals(PgOrderEnum.IN_GROUP.getCode()))
+        if(!(pgOrderMaster.getOrderStatus().equals(PgOrderEnum.IN_GROUP.getCode()) || pgOrderMaster.getOrderStatus().equals(PgOrderEnum.NEW.getCode())))
             throw new MadaoException(ErrorEnum.ORDER_STATUS_ERROR, IdResultMap.getIdMap(orderId));
         pgOrderMaster.setOrderRemark(remark);
         pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
@@ -856,7 +887,7 @@ public class OrderService {
             for(PgOrderMaster pgOrderMaster: pgOrderMasterList){
                 id.remove(pgOrderMaster.getOrderId());
             }
-            throw new MadaoException(ErrorEnum.ORDER_NOT_EXIST, id);
+            throw new MadaoException(ErrorEnum.ORDER_NOT_EXIST, IdResultMap.getIdMap(id));
         }
         return pgOrderMasterList;
     }

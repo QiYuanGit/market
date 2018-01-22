@@ -83,7 +83,7 @@ public class OrderHandler {
 
     //商家调用查看订单
     @GetMapping("/order/shop")
-    public ResultView getOrderByShop(@RequestParam(value="shopId", required=false) Long shopId, @RequestParam(value="orderStatus", required=false) Byte orderStatus, @RequestParam(value="payStatus", required=false) Byte payStatus, @RequestParam(value="deliveryStatus", required=false) Byte deliveryStatus, @RequestParam(value="commentStatus", required=false) Byte commentStatus){
+    public ResultView getOrderByShop(@RequestParam(value="shopId") Long shopId, @RequestParam(value="orderStatus", required=false) Byte orderStatus, @RequestParam(value="payStatus", required=false) Byte payStatus, @RequestParam(value="deliveryStatus", required=false) Byte deliveryStatus, @RequestParam(value="commentStatus", required=false) Byte commentStatus){
         return ResultUtil.returnSuccess(orderService.getOrderDTO(shopId, null, orderStatus, payStatus, deliveryStatus, commentStatus));
     }
 
@@ -116,12 +116,8 @@ public class OrderHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        List<OrderDTO> orderDTOList = orderService.payOrder(orderUpdateForm.getId(), orderUpdateForm.getOrderIdList());
-        System.out.println(orderDTOList + "-----------" + orderDTOList.size());
-        if(orderDTOList.size()==0){
-            throw new ResultException(ErrorEnum.PAY_ORDER_ERROR.getMessage());
-        }
-        return ResultUtil.returnSuccess(orderDTOList);
+        orderService.payOrder(orderUpdateForm.getId(), orderUpdateForm.getOrderIdList());
+        return ResultUtil.returnSuccess();
     }
 
     //支付拼购订单
@@ -130,11 +126,8 @@ public class OrderHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        List<PgOrderDTO> pgOrderDTOList = orderService.payPgOrder(orderUpdateForm.getId(), orderUpdateForm.getOrderIdList());
-        if(pgOrderDTOList.size()==0){
-            throw new ResultException(ErrorEnum.PAY_ORDER_ERROR.getMessage());
-        }
-        return ResultUtil.returnSuccess(pgOrderDTOList);
+        orderService.payPgOrder(orderUpdateForm.getId(), orderUpdateForm.getOrderIdList());
+        return ResultUtil.returnSuccess();
     }
 
     //商家设置配送时间
@@ -143,8 +136,8 @@ public class OrderHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        List<String> id = orderService.updateDeliveryTime(orderDateForm.getShopId(), orderDateForm.getOrderIdList(), orderDateForm.getDate(), null);
-        return ResultUtil.returnSuccess(id);
+        orderService.updateDeliveryTime(orderDateForm.getShopId(), orderDateForm.getOrderIdList(), orderDateForm.getDate(), null);
+        return ResultUtil.returnSuccess();
     }
 
     @PutMapping("/pgOrder/delivery")
@@ -152,17 +145,18 @@ public class OrderHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        List<String> idList = orderService.updateDeliveryTimePg(orderDateForm.getShopId(), orderDateForm.getOrderIdList(), orderDateForm.getDate(), null);
-        return ResultUtil.returnSuccess(idList);
+        orderService.updateDeliveryTimePg(orderDateForm.getShopId(), orderDateForm.getOrderIdList(), orderDateForm.getDate(), null);
+        return ResultUtil.returnSuccess();
     }
 
+    //商家确认送达
     @PutMapping("/order/arrive")
     public ResultView setOrderArriveTime(@Valid @RequestBody OrderDateForm orderDateForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        List<String> id = orderService.updateDeliveryTime(orderDateForm.getShopId(), orderDateForm.getOrderIdList(),  null, orderDateForm.getDate());
-        return ResultUtil.returnSuccess(id);
+        orderService.confirmArriveByShop(orderDateForm.getShopId(), orderDateForm.getOrderIdList(), orderDateForm.getDate());
+        return ResultUtil.returnSuccess();
     }
 
     @PutMapping("/pgOrder/arrive")
@@ -170,8 +164,8 @@ public class OrderHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        List<String> id = orderService.updateDeliveryTimePg(orderDateForm.getShopId(), orderDateForm.getOrderIdList(),  null, orderDateForm.getDate());
-        return ResultUtil.returnSuccess(id);
+        orderService.confirmArriveByShopPg(orderDateForm.getShopId(), orderDateForm.getOrderIdList(),  orderDateForm.getDate());
+        return ResultUtil.returnSuccess();
     }
 
     //用户取消订单
@@ -180,19 +174,20 @@ public class OrderHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        List<OrderDTO> result = orderService.cancelOrderByUser(form.getId(), form.getOrderIdList());
-        if(result.size()==0)
-            throw new MadaoException(ErrorEnum.ORDER_NOT_CANCEL);
-        return ResultUtil.returnSuccess(result);
+        orderService.cancelOrderByUser(form.getId(), form.getOrderIdList());
+        return ResultUtil.returnSuccess();
     }
 
     //商家取消订单
     @PutMapping("/order/cancel/shop")
     public ResultView cancelOrderByShop(@Valid @RequestBody OrderIdForm form, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
+        }
         List<OrderDTO> result = orderService.cancelOrderByShop(form.getId(), form.getOrderIdList());
         if(result.size()==0)
             throw new MadaoException(ErrorEnum.ORDER_NOT_CANCEL);
-        return ResultUtil.returnSuccess(result);
+        return ResultUtil.returnSuccess();
     }
 
     //用户取消拼购订单
@@ -201,10 +196,8 @@ public class OrderHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        List<PgOrderDTO> result = orderService.cancelPgOrderByUser(form.getId(), form.getOrderIdList());
-        if(result.size()==0)
-            throw new MadaoException(ErrorEnum.ORDER_NOT_CANCEL);
-        return ResultUtil.returnSuccess(result);
+        orderService.cancelPgOrderByUser(form.getId(), form.getOrderIdList());
+        return ResultUtil.returnSuccess();
     }
 
     //商家取消拼购订单
@@ -214,8 +207,6 @@ public class OrderHandler {
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
         List<String> orderIdList = pgOrderIdForm.getOrderIdList();
-        if(orderIdList==null || orderIdList.size()==0)
-            throw new ResultException("未选中订单");
         List<PgOrderDTO> result = orderService.cancelPgOrderByShop(orderIdList);
         if(result.size()==0)
             throw new MadaoException(ErrorEnum.ORDER_NOT_CANCEL);

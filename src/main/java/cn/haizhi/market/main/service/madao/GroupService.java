@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.acl.Group;
 import java.util.Date;
 import java.util.List;
 
@@ -43,10 +44,10 @@ public class GroupService {
         PgOrderMaster pgOrderMaster = pgOrderMasterMapper.selectByPrimaryKey(orderId);
         if(pgOrderMaster==null)
             throw new MadaoException(ErrorEnum.ORDER_NOT_EXIST, IdResultMap.getIdMap(orderId));
-        if(!pgOrderMaster.getOrderStatus().equals(PgOrderEnum.NEW.getCode()))
-            throw new MadaoException(ErrorEnum.ORDER_STATUS_ERROR, IdResultMap.getIdMap(orderId));
         if(!pgOrderMaster.getUserId().equals(userId))
             throw new MadaoException(ErrorEnum.ORDER_OWNER_ERROR, IdResultMap.getIdMap(orderId));
+        if(!pgOrderMaster.getOrderStatus().equals(PgOrderEnum.NEW.getCode()))
+            throw new MadaoException(ErrorEnum.ORDER_STATUS_ERROR, IdResultMap.getIdMap(orderId));
         if(!pgOrderMaster.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode()))
             throw new MadaoException(ErrorEnum.ORDER_PAY_STATUS_ERROR, IdResultMap.getIdMap(orderId));
 
@@ -57,12 +58,14 @@ public class GroupService {
         group.setGroupId(KeyUtil.genUniquKey());
         group.setGroupNum(groupInfo.getGroupNum());
         group.setGroupCount(1);
-
+        group.setDeadDate(DateFormatUtil.getLastTimeOfDay());
+        Date date = group.getDeadDate();
         GroupMember groupMember = addGroupMember(pgOrderMaster, group);
         group.setLeadMemberId(groupMember.getMemberId());
         pgOrderMaster.setGroupId(group.getGroupId());
+        pgOrderMaster.setOrderStatus(PgOrderEnum.IN_GROUP.getCode());
         pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
-        groupMapper.insertSelective(group);
+        groupMapper.insert(group);
         return group;
     }
 
@@ -92,37 +95,51 @@ public class GroupService {
 
     //拼购订单加入拼购组，要判断加入后是否完成
     public PgGroup addToGroup(Long userId, String orderId, String groupId){
+        //获取订单，判断订单是否有异常
         PgOrderMaster pgOrderMaster = pgOrderMasterMapper.selectByPrimaryKey(orderId);
         if(pgOrderMaster==null)
             throw new MadaoException(ErrorEnum.ORDER_NOT_EXIST, IdResultMap.getIdMap(orderId));
         if(!pgOrderMaster.getUserId().equals(userId)){
             throw new MadaoException(ErrorEnum.ORDER_OWNER_ERROR, IdResultMap.getIdMap(orderId));
         }
+        if(!pgOrderMaster.getOrderStatus().equals(PgOrderEnum.NEW.getCode()))
+            throw new MadaoException(ErrorEnum.ORDER_STATUS_ERROR);
         if(!pgOrderMaster.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode()))
             throw new MadaoException(ErrorEnum.ORDER_PAY_STATUS_ERROR, IdResultMap.getIdMap(orderId));
-        PgGroup group = groupMapper.selectByPrimaryKey(groupId);
-        if(group==null)
+
+       //获取拼购组，判断拼购组是否有异常
+        GroupDTO groupDTO = commonMapper.getGroupDTOByGroupId(groupId);
+        if(groupDTO==null)
             throw new MadaoException(ErrorEnum.GROUP_NOT_EXIST, IdResultMap.getIdMap(groupId));
-        if(group.getActiveStatus().equals(GroupActiveStatusEnum.GROUP_INACTIVE.getCode()))
+        if(groupDTO.getActiveStatus().equals(GroupActiveStatusEnum.GROUP_INACTIVE.getCode()))
             throw new MadaoException(ErrorEnum.GROUP_NOT_ACTIVE, IdResultMap.getIdMap(groupId));
-        if(group.getGroupStatus().equals(GroupStatusEnum.FINISH.getCode()) || group.getGroupCount().equals(group.getGroupNum()))
+        if(groupDTO.getGroupStatus().equals(GroupStatusEnum.FINISH.getCode()) || groupDTO.getGroupCount().equals(groupDTO.getGroupNum()))
             throw new MadaoException(ErrorEnum.GROUP_GROUP_FULL, IdResultMap.getIdMap(groupId));
-        group.setGroupCount(group.getGroupCount()+1);
-        boolean flag = group.getGroupCount().equals(group.getGroupNum());
-        if(flag){
-            group.setGroupStatus(GroupStatusEnum.FINISH.getCode());
+        if(checkIfHadOrderInGroupByUser(groupDTO, userId)){
+            throw new MadaoException(ErrorEnum.USER_HAVE_ORDER_IN_GROUP, IdResultMap.getIdMap(groupId));
         }
-        groupMapper.updateByPrimaryKeySelective(group);
+
+        //更新拼购组信息
+        groupDTO.setGroupCount(groupDTO.getGroupCount()+1);
+        boolean flag = groupDTO.getGroupCount().equals(groupDTO.getGroupNum());
+        if(flag){
+            groupDTO.setGroupStatus(GroupStatusEnum.FINISH.getCode());
+        }
+        PgGroup pgGroup = new PgGroup();
+        BeanUtils.copyProperties(groupDTO, pgGroup);
+        groupMapper.updateByPrimaryKeySelective(pgGroup);
 
         //添加组成员
-        addGroupMember(pgOrderMaster, group);
-        pgOrderMaster.setGroupId(group.getGroupId());
+        addGroupMember(pgOrderMaster, pgGroup);
+        //更新订单信息
+        pgOrderMaster.setGroupId(groupDTO.getGroupId());
+        pgOrderMaster.setOrderStatus(PgOrderEnum.IN_GROUP.getCode());
         pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
         //如果拼购组已完成，更新各个订单
         if(flag){
             setGroupOrderFinish(groupId);
         }
-        return group;
+        return pgGroup;
     }
 
     //根据组id更新拼购订单为已拼购完成的状态
@@ -137,6 +154,7 @@ public class GroupService {
         }
     }
 
+    //根据订单添加进拼购组
     public GroupMember addGroupMember(PgOrderMaster pgOrderMaster, PgGroup group){
         User user = userMapper.selectByPrimaryKey(pgOrderMaster.getUserId());
         GroupMember groupMember = new GroupMember();
@@ -149,4 +167,15 @@ public class GroupService {
         groupMemberMapper.insertSelective(groupMember);
         return groupMember;
     }
+
+    //判断拼购组中是否已经有该用户的订单了
+    public boolean checkIfHadOrderInGroupByUser(GroupDTO groupDTO, Long userId){
+        for(GroupMember groupMember: groupDTO.getGroupMemberList()){
+            if(groupMember.getUserId().equals(userId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
