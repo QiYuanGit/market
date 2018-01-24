@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Date: 2018/1/9
@@ -39,9 +40,9 @@ public class BeanUtil {
         BeanUtils.copyProperties(source,target);
     }
 
-    //最大19位
+    //生成最大19位的Long型编号
     public static synchronized Long getId() {
-        return System.currentTimeMillis() + new Random().nextInt(900000) + 100000;
+        return UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
     }
 
     public static String isLike(String string) throws UnsupportedEncodingException {

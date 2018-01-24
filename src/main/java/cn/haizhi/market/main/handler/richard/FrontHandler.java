@@ -1,9 +1,6 @@
 package cn.haizhi.market.main.handler.richard;
 
-import cn.haizhi.market.main.bean.richard.Product;
-import cn.haizhi.market.main.bean.richard.ProductCategory;
-import cn.haizhi.market.main.bean.richard.Shop;
-import cn.haizhi.market.main.bean.richard.ShopComment;
+import cn.haizhi.market.main.bean.richard.*;
 import cn.haizhi.market.main.service.richard.FrontService;
 import cn.haizhi.market.main.view.ResultView;
 import cn.haizhi.market.other.util.ResultUtil;
@@ -24,7 +21,7 @@ public class FrontHandler {
     @Autowired
     private FrontService frontService;
 
-    @GetMapping(value = "/product/categories",produces = "application/json; charset=UTF-8")
+    @GetMapping(value = {"/product/categories","/groupProduct/categories"},produces = "application/json; charset=UTF-8")
     public ResultView getProductCategories(ProductCategory productCategoryForm) throws Exception {
         return ResultUtil.returnSuccess(frontService.getProductCategories(productCategoryForm));
     }
@@ -37,6 +34,16 @@ public class FrontHandler {
     @GetMapping(value = "/product",produces = "application/json; charset=UTF-8")
     public ResultView getProduct(@RequestParam("productId") Long productId) throws Exception {
         return ResultUtil.returnSuccess(frontService.getProduct(productId));
+    }
+
+    @GetMapping(value = "/groupProducts",produces = "application/json; charset=UTF-8")
+    public ResultView getGroupProducts(GroupProduct groupProductForm) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getGroupProducts(groupProductForm));
+    }
+
+    @GetMapping(value = "/groupProduct",produces = "application/json; charset=UTF-8")
+    public ResultView getGroupProduct(@RequestParam("productId") Long productId) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getGroupProduct(productId));
     }
 
     @GetMapping(value = "/shops",produces = "application/json; charset=UTF-8")

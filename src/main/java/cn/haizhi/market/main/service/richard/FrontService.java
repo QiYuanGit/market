@@ -2,14 +2,12 @@ package cn.haizhi.market.main.service.richard;
 
 import cn.haizhi.market.main.bean.richard.*;
 import cn.haizhi.market.main.view.PageView;
-import cn.haizhi.market.main.view.richard.ProductView;
-import cn.haizhi.market.main.view.richard.ShopCommentView;
-import cn.haizhi.market.main.view.richard.ShopPictureView;
-import cn.haizhi.market.main.view.richard.ShopView;
+import cn.haizhi.market.main.view.richard.*;
 import cn.haizhi.market.other.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,13 +26,19 @@ public class FrontService {
     private ProductCategoryService productCategoryService;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private GroupProductService groupProductService;
+
+    @Autowired
+    private GroupProductPictureService groupProductPictureService;
+
+    @Autowired
     private ShopService shopService;
 
     @Autowired
     private ShopPictureService shopPictureService;
-
-    @Autowired
-    private ProductService productService;
 
     @Autowired
     private ShopCommentService shopCommentService;
@@ -88,6 +92,56 @@ public class FrontService {
         }
         return dataMap;
     }
+
+    //查询批量拼购商品，接受当前页码，每页条数，商品名称，分类编号
+    public Map<String,Object> getGroupProducts(GroupProduct groupProductForm) throws Exception {
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        List<GroupProduct> groupProductList = groupProductService.selectLot(groupProductForm);
+        if(BeanUtil.notEmpty(groupProductList)){
+            List<Long> productIdList = groupProductList.stream().map(GroupProduct::getProductId).collect(Collectors.toList());
+            GroupProductPicture groupProductPictureForm = new GroupProductPicture();
+            groupProductPictureForm.setIdList(productIdList);
+            List<GroupProductPicture> groupProductPictureList = groupProductPictureService.selectLot(groupProductPictureForm);
+            List<GroupProductView> groupProductViewList = new ArrayList<>();
+            for(GroupProduct groupProduct : groupProductList){
+                GroupProductView groupProductView = new GroupProductView();
+                BeanUtil.copyBean(groupProduct,groupProductView);
+                for(GroupProductPicture groupProductPicture : groupProductPictureList){
+                   if(groupProductPicture.getProductId().equals(groupProduct.getProductId())){
+                       GroupProductPictureView groupProductPictureView = new GroupProductPictureView();
+                       BeanUtil.copyBean(groupProductPicture,groupProductPictureView);
+                       groupProductView.addPicture(groupProductPictureView);
+                   }
+                }
+                groupProductViewList.add(groupProductView);
+            }
+            dataMap.put("groupProducts",new PageView(groupProductViewList));
+        }
+        return dataMap;
+    }
+
+    //查询单一拼购商品，接受商品编号
+    public Map<String,Object> getGroupProduct(Long productId) throws Exception {
+        Map<String, Object> dataMap = new LinkedHashMap<>();
+        GroupProduct groupProduct = groupProductService.selectOne(productId);
+        if(BeanUtil.notNull(groupProduct)){
+            GroupProductView groupProductView = new GroupProductView();
+            BeanUtil.copyBean(groupProduct,groupProductView);
+            GroupProductPicture groupProductPictureForm = new GroupProductPicture();
+            groupProductPictureForm.setProductId(productId);
+            List<GroupProductPicture> groupProductPictureList = groupProductPictureService.selectLot(groupProductPictureForm);
+            for(GroupProductPicture groupProductPicture : groupProductPictureList){
+                if(groupProductPicture.getProductId().equals(groupProduct.getProductId())){
+                    GroupProductPictureView groupProductPictureView = new GroupProductPictureView();
+                    BeanUtil.copyBean(groupProductPicture,groupProductPictureView);
+                    groupProductView.addPicture(groupProductPictureView);
+                }
+            }
+            dataMap.put("groupProduct",groupProductView);
+        }
+        return dataMap;
+    }
+
 
     //查询批量商店，接收当前页码、每页条数、是否推荐、排列顺序
     //首页，商店列表页面
