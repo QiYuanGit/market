@@ -34,30 +34,14 @@ public class CartItemHandler {
 
     //根据用户id和购物车类别获取购物车列表
     @GetMapping("/cartItem")
-    public ResultView getCartItemListByUserId(@RequestParam("userId") Long userId, @RequestParam("category") Byte category) {
-        if (category.equals(CartItemCategoryEnum.PLAIN_ITEM.getCode())){
-            return ResultUtil.returnSuccess(cartItemService.getCartListPlainByUserId(userId));
-        }else if(category.equals(CartItemCategoryEnum.GROUP_ITEM.getCode())){
-            return ResultUtil.returnSuccess(cartItemService.getCartListPgByUserId(userId));
-        }else{
-            return ResultUtil.returnSuccess();
-        }
+    public ResultView getCartItemListByUserId(@RequestParam("userId") Long userId) {
+       return ResultUtil.returnSuccess(cartItemService.getCartListByUserId(userId));
     }
 
     //获取购物车列表 分页
     @GetMapping("/cartItem/page")
-    public ResultView getCartItemListByUserId(@RequestParam("userId") Long userId, @RequestParam("category") Byte category, @RequestParam(value="pageNum", defaultValue="1") Integer pageNum, @RequestParam(value="pageSize", defaultValue="10") Integer pageSize){
-        PageInfo pageInfo = null;
-        if(category.equals(CartItemCategoryEnum.PLAIN_ITEM.getCode())){
-
-            pageInfo = cartItemService.getCartListPlainByUserIdInPage(userId, pageNum, pageSize);
-
-        }else if(category.equals(CartItemCategoryEnum.GROUP_ITEM.getCode())){
-            PageHelper.startPage(pageNum, pageSize);
-            List<CartItemDTO> cartItemList = cartItemService.getCartListPgByUserId(userId);
-            pageInfo = new PageInfo(cartItemList);
-
-        }
+    public ResultView getCartItemListByUserId(@RequestParam("userId") Long userId, @RequestParam(value="pageNum", defaultValue="1") Integer pageNum, @RequestParam(value="pageSize", defaultValue="10") Integer pageSize){
+        PageInfo pageInfo = cartItemService.getCartListByUserIdInPage(userId, pageNum, pageSize);
         return ResultUtil.returnSuccess(pageInfo);
     }
 
@@ -78,9 +62,7 @@ public class CartItemHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        int result = cartItemService.deleteCartItemById(form.getUserId(), form.getCartItemId());
-        if (result <= 0)
-            throw new MadaoException(ErrorEnum.CARTITEM_DELETE_FAIL);
+        cartItemService.deleteCartItemById(form.getUserId(), form.getCartItemId());
         return ResultUtil.returnSuccess();
     }
 
@@ -90,9 +72,7 @@ public class CartItemHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        int result = cartItemService.deleteCartItemByUserId(form.getUserId(), form.getCategory());
-        if(result<=0)
-            throw new ResultException("清空购物车失败");
+        cartItemService.deleteCartItemByUserId(form.getUserId());
         return ResultUtil.returnSuccess();
     }
 
@@ -102,10 +82,7 @@ public class CartItemHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        int result = cartItemService.updateCartItemQuantity(form.getUserId(), form.getCartItemId(), form.getQuantity());
-        if(result<=0)
-            throw new ResultException("修改购物车失败");
+        cartItemService.updateCartItemQuantity(form.getUserId(), form.getCartItemId(), form.getQuantity());
         return ResultUtil.returnSuccess(IdResultMap.getIdMap(form.getCartItemId()));
     }
-
 }

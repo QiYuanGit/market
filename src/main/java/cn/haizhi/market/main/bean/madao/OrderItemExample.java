@@ -1,5 +1,6 @@
 package cn.haizhi.market.main.bean.madao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -384,52 +385,52 @@ public class OrderItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceEqualTo(Long value) {
+        public Criteria andProductPriceEqualTo(BigDecimal value) {
             addCriterion("product_price =", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceNotEqualTo(Long value) {
+        public Criteria andProductPriceNotEqualTo(BigDecimal value) {
             addCriterion("product_price <>", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceGreaterThan(Long value) {
+        public Criteria andProductPriceGreaterThan(BigDecimal value) {
             addCriterion("product_price >", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andProductPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("product_price >=", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceLessThan(Long value) {
+        public Criteria andProductPriceLessThan(BigDecimal value) {
             addCriterion("product_price <", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceLessThanOrEqualTo(Long value) {
+        public Criteria andProductPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("product_price <=", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceIn(List<Long> values) {
+        public Criteria andProductPriceIn(List<BigDecimal> values) {
             addCriterion("product_price in", values, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceNotIn(List<Long> values) {
+        public Criteria andProductPriceNotIn(List<BigDecimal> values) {
             addCriterion("product_price not in", values, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceBetween(Long value1, Long value2) {
+        public Criteria andProductPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("product_price between", value1, value2, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andProductPriceNotBetween(Long value1, Long value2) {
+        public Criteria andProductPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("product_price not between", value1, value2, "productPrice");
             return (Criteria) this;
         }
@@ -491,6 +492,76 @@ public class OrderItemExample {
 
         public Criteria andProductQuantityNotBetween(Integer value1, Integer value2) {
             addCriterion("product_quantity not between", value1, value2, "productQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitIsNull() {
+            addCriterion("product_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitIsNotNull() {
+            addCriterion("product_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitEqualTo(String value) {
+            addCriterion("product_unit =", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitNotEqualTo(String value) {
+            addCriterion("product_unit <>", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitGreaterThan(String value) {
+            addCriterion("product_unit >", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitGreaterThanOrEqualTo(String value) {
+            addCriterion("product_unit >=", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitLessThan(String value) {
+            addCriterion("product_unit <", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitLessThanOrEqualTo(String value) {
+            addCriterion("product_unit <=", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitLike(String value) {
+            addCriterion("product_unit like", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitNotLike(String value) {
+            addCriterion("product_unit not like", value, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitIn(List<String> values) {
+            addCriterion("product_unit in", values, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitNotIn(List<String> values) {
+            addCriterion("product_unit not in", values, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitBetween(String value1, String value2) {
+            addCriterion("product_unit between", value1, value2, "productUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andProductUnitNotBetween(String value1, String value2) {
+            addCriterion("product_unit not between", value1, value2, "productUnit");
             return (Criteria) this;
         }
 

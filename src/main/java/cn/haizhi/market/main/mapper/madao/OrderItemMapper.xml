@@ -8,6 +8,7 @@
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
     <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
     <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
+    <result column="product_unit" jdbcType="VARCHAR" property="productUnit" />
     <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
     <result column="product_icon" jdbcType="VARCHAR" property="productIcon" />
   </resultMap>
@@ -70,8 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    item_id, order_id, product_id, product_name, product_price, product_quantity, product_desc, 
-    product_icon
+    item_id, order_id, product_id, product_name, product_price, product_quantity, product_unit, 
+    product_desc, product_icon
   </sql>
   <select id="selectByExample" parameterType="cn.haizhi.market.main.bean.madao.OrderItemExample" resultMap="BaseResultMap">
     select
@@ -106,10 +107,12 @@
   <insert id="insert" parameterType="cn.haizhi.market.main.bean.madao.OrderItem">
     insert into order_item (item_id, order_id, product_id, 
       product_name, product_price, product_quantity, 
-      product_desc, product_icon)
+      product_unit, product_desc, product_icon
+      )
     values (#{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, 
       #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL}, #{productQuantity,jdbcType=INTEGER}, 
-      #{productDesc,jdbcType=VARCHAR}, #{productIcon,jdbcType=VARCHAR})
+      #{productUnit,jdbcType=VARCHAR}, #{productDesc,jdbcType=VARCHAR}, #{productIcon,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.haizhi.market.main.bean.madao.OrderItem">
     insert into order_item
@@ -131,6 +134,9 @@
       </if>
       <if test="productQuantity != null">
         product_quantity,
+      </if>
+      <if test="productUnit != null">
+        product_unit,
       </if>
       <if test="productDesc != null">
         product_desc,
@@ -157,6 +163,9 @@
       </if>
       <if test="productQuantity != null">
         #{productQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="productUnit != null">
+        #{productUnit,jdbcType=VARCHAR},
       </if>
       <if test="productDesc != null">
         #{productDesc,jdbcType=VARCHAR},
@@ -193,6 +202,9 @@
       <if test="record.productQuantity != null">
         product_quantity = #{record.productQuantity,jdbcType=INTEGER},
       </if>
+      <if test="record.productUnit != null">
+        product_unit = #{record.productUnit,jdbcType=VARCHAR},
+      </if>
       <if test="record.productDesc != null">
         product_desc = #{record.productDesc,jdbcType=VARCHAR},
       </if>
@@ -212,6 +224,7 @@
       product_name = #{record.productName,jdbcType=VARCHAR},
       product_price = #{record.productPrice,jdbcType=DECIMAL},
       product_quantity = #{record.productQuantity,jdbcType=INTEGER},
+      product_unit = #{record.productUnit,jdbcType=VARCHAR},
       product_desc = #{record.productDesc,jdbcType=VARCHAR},
       product_icon = #{record.productIcon,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -236,6 +249,9 @@
       <if test="productQuantity != null">
         product_quantity = #{productQuantity,jdbcType=INTEGER},
       </if>
+      <if test="productUnit != null">
+        product_unit = #{productUnit,jdbcType=VARCHAR},
+      </if>
       <if test="productDesc != null">
         product_desc = #{productDesc,jdbcType=VARCHAR},
       </if>
@@ -252,6 +268,7 @@
       product_name = #{productName,jdbcType=VARCHAR},
       product_price = #{productPrice,jdbcType=DECIMAL},
       product_quantity = #{productQuantity,jdbcType=INTEGER},
+      product_unit = #{productUnit,jdbcType=VARCHAR},
       product_desc = #{productDesc,jdbcType=VARCHAR},
       product_icon = #{productIcon,jdbcType=VARCHAR}
     where item_id = #{itemId,jdbcType=VARCHAR}

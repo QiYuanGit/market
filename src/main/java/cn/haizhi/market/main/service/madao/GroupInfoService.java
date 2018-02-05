@@ -27,7 +27,7 @@ public class GroupInfoService {
     @Autowired
     GroupInfoMapper groupInfoMapper;
     //更新或插入拼购信息
-    public int dealWithGroupInfo(GroupInfo groupInfo) throws ParseException {
+    public void dealWithGroupInfo(GroupInfo groupInfo) throws ParseException {
         if(groupInfo.getGroupDate()==null && groupInfo.getGroupInfoId()==null) {
             log.error("-----------NULL");
             throw new MadaoException(ErrorEnum.PARAM_ERROR);
@@ -59,7 +59,8 @@ public class GroupInfoService {
         }else {
             result = groupInfoMapper.insertSelective(groupInfo);
         }
-        return result;
+        if(result<=0)
+            throw new MadaoException(ErrorEnum.OPERATION_FAIL);
     }
 
     //获取所有组

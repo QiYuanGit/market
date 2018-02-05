@@ -48,10 +48,7 @@ public class GroupInfoHandler {
         if(bindingResult.hasErrors()){
             throw new MadaoException(ErrorEnum.PARAM_ERROR, getFormErrors(bindingResult));
         }
-        int result = service.dealWithGroupInfo(groupInfo);
-
-        if(result<=0)
-            throw new ResultException("未更新拼购组信息");
+        service.dealWithGroupInfo(groupInfo);
         return ResultUtil.returnSuccess();
     }
 }

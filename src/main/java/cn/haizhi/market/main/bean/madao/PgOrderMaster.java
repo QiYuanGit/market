@@ -5,13 +5,11 @@ import cn.haizhi.market.other.enums.madao.DeliveryStatusEnum;
 import cn.haizhi.market.other.enums.madao.OrderStatusEnum;
 import cn.haizhi.market.other.enums.madao.PayStatusEnum;
 import lombok.Data;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@DynamicUpdate
 public class PgOrderMaster {
     private String orderId;
 
@@ -24,10 +22,6 @@ public class PgOrderMaster {
     private String userPhone;
 
     private String userAddress;
-
-    private BigDecimal productAmount;
-
-    private BigDecimal sendPrice;
 
     private BigDecimal orderAmount;
 
@@ -56,5 +50,4 @@ public class PgOrderMaster {
     private Date updateTime;
 
     private String orderRemark;
-
 }

@@ -12,8 +12,6 @@ public class OrderUpdateForm {
     private Long id;
     @NotEmpty(message = "订单项为空")
     private List<String> orderIdList;
-    @NotNull(message = "账号为空")
-    private String payAccount;
     @NotNull(message = "支付类型为空")
     private Byte payWay;
 }

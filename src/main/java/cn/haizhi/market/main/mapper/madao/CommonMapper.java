@@ -13,7 +13,7 @@ public interface CommonMapper {
     List<CartShopDTO> getCartShopDTOByUserId(Long userId);
 
 
-    List<CartItemDTO> getCartItemDTO(Long userId, byte category);
+    List<CartItemDTO> getCartItemDTOByUserId(Long userId);
 
 
     List<CartItemDTO> getCartItemDTOByCartItemIdList(List<String> cartItemIdList);
@@ -43,4 +43,10 @@ public interface CommonMapper {
 
 
     List<GroupDTO> getGroupDTOByExample(Byte groupStatus, Byte activeStatus);
+
+    List<PgCartItemDTO> getPgCartItemDTOListByUserId(Long userId);
+
+    List<PgCartItemDTO> getPgCartItemDTOByCartItemIdList(List<String> pgCartItemId);
+
+    void increaseGroupProductStock(Long productId, Integer productQuantity);
 }

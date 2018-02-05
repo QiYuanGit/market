@@ -5,22 +5,25 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class OrderItem {
+public class PgCartItemDTO {
     private String itemId;
 
-    private String orderId;
+    private Long userId;
+
+    private Integer productQuantity;
 
     private Long productId;
 
     private String productName;
 
-    private BigDecimal productPrice;
+    private BigDecimal productOprice;
 
-    private Integer productQuantity;
+    private BigDecimal productNprice;
+
+    private Integer productStock;
 
     private String productUnit;
 
     private String productDesc;
 
-    private String productIcon;
 }

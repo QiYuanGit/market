@@ -13,6 +13,6 @@ public class CartItemReviseForm {
     @NotBlank(message = "购物车项为空")
     private String cartItemId;
     @NotNull(message = "数量不能为空")
-    @Min(value=0, message = "数量不能小于1")
+    @Min(value=1, message = "数量不能小于1")
     private Integer quantity;
 }

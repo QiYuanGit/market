@@ -15,8 +15,4 @@ public class CartShopDTO {
     private BigDecimal limitPrice;
     private BigDecimal sendPrice;
     private List<CartItemDTO> cartItemDTOList;
-
-
-
-
 }

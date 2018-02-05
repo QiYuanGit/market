@@ -60,6 +60,15 @@ public enum ErrorEnum {
     CONFIRM_CANCEL_FAIL(437, "确认取消订单失败"),
     CONFIRM_RECEIVE_FAIL(438, "确认收货失败"),
     USER_HAVE_ORDER_IN_GROUP(439, "用户已经有订单在该组中"),
+
+    CARTITEM_ADD_FAIL(440, "添加购物车失败"),
+    CARTITEM_EMPTY_FAIL(441, "清空购物车失败"),
+    CARTITEM_REVISE_FAIL(442, "修改购物车失败"),
+
+    ORDER_DATE_ERROR(443, "订单时间异常"),
+    OPERATION_FAIL(444, "操作失败"),
+    CARTITEM_ERROR(445, "购物车项错误"),
+    ORDER_SET_DELIVERY_FAIL(446, "设置订单配送状态失败"),
     ;
 
     private int code;

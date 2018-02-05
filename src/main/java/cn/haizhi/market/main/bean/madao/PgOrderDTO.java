@@ -20,10 +20,6 @@ public class PgOrderDTO {
 
     private String userAddress;
 
-    private BigDecimal productAmount;
-
-    private BigDecimal sendPrice;
-
     private BigDecimal orderAmount;
 
     private Byte orderStatus;

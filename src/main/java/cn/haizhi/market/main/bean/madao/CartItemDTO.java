@@ -18,20 +18,20 @@ public class CartItemDTO {
 
     private Integer productQuantity;
 
-    private Byte itemCategory;
-
     private String productName;
 
     private BigDecimal productPrice;
 
     private BigDecimal discountPrice;
 
+    private int discountState;
+
+    private String limitNumber;
+
     private String productIcon;
 
     private String productDesc;
 
     private String productState;
-
-
 
 }

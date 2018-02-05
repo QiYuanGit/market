@@ -2,18 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.haizhi.market.main.mapper.madao.CommonMapper">
 
+    <!--商品-商铺简要信息-->
     <resultMap id="ProductShopMap" type="cn.haizhi.market.main.bean.madao.ProductShop">
         <id column="shop_id" jdbcType="BIGINT" property="shopId" />
         <result column="shop_name" jdbcType="VARCHAR" property="shopName"></result>
         <result column="product_id" jdbcType="BIGINT" property="productId"></result>
-        <result column="discount_state" jdbcType="INTEGER" property="discountState"></result>
     </resultMap>
-
+    <!--根据传入的商铺id查询商铺-商铺信息-->
     <select id="getShopInfoByProductId" parameterType="long" resultMap="ProductShopMap">
-        select p.product_id, p.discount_state,  s.shop_id, s.shop_name from shop s, product p where s.shop_id= p.shop_id and product_id=#{productId}
+        select p.product_id, s.shop_id, s.shop_name from shop s, product p where product_id=#{productId} AND  s.shop_id= p.shop_id
     </select>
 
 
+    <!--购物车商店-->
     <resultMap id="CartShopDTO" type="cn.haizhi.market.main.bean.madao.CartShopDTO">
         <id column="cart_id" jdbcType="VARCHAR" property="cartId"></id>
         <result column="user_id" jdbcType="BIGINT" property="userId"></result>
@@ -22,24 +23,43 @@
         <result column="limit_price" jdbcType="DECIMAL" property="limitPrice"></result>
         <result column="send_price" jdbcType="DECIMAL" property="sendPrice"></result>
     </resultMap>
-
+    <!-- 根据用户id得到CartShopDTO，不带购物车项-->
     <select id="getCartShopDTOByUserId" resultMap="CartShopDTO">
         select c.cart_id, c.user_id, c.shop_id, s.shop_name, s.shop_state, s.limit_price, s.send_price from cart_shop c, shop s where c.user_id = #{userId} and c.shop_id = s.shop_id
     </select>
 
 
-    <select id="getCartItemDTO"  resultType="cn.haizhi.market.main.bean.madao.CartItemDTO">
-        select c.item_id, c.user_id, c.shop_id, c.shop_name, c.product_id, c.product_quantity, c.item_category, p.product_name, p.product_price, p.discount_price, p.product_icon, p.product_desc, p.product_state from cart_item c, product p where c.item_category=#{param2} and c.user_id=#{param1} and c.product_id=p.product_id
+
+    <!--普通商品购物车项-->
+    <resultMap id="CartItemDTO" type="cn.haizhi.market.main.bean.madao.CartItemDTO">
+        <id column="item_id" property="itemId" jdbcType="VARCHAR"></id>
+        <result column="user_id" property="userId" jdbcType="BIGINT"></result>
+        <result column="shop_id" property="shopId" jdbcType="BIGINT"></result>
+        <result column="shop_name" property="shopName" jdbcType="VARCHAR"></result>
+        <result column="product_id" property="productId" jdbcType="BIGINT"></result>
+        <result column="product_quantity" property="productQuantity" jdbcType="INTEGER"></result>
+        <result column="product_name" property="productName" jdbcType="VARCHAR"></result>
+        <result column="product_price" property="productPrice" jdbcType="DECIMAL"></result>
+        <result column="discount_status" property="discountPrice" jdbcType="DECIMAL"></result>
+        <result column="limit_number" property="limitNumber" jdbcType="VARCHAR"></result>
+        <result column="product_icon" property="productIcon" jdbcType="VARCHAR"></result>
+        <result column="product_state" property="productState" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <select id="getCartItemDTOByUserId"  resultType="cn.haizhi.market.main.bean.madao.CartItemDTO">
+        select c.item_id, c.user_id, c.shop_id, c.shop_name, c.product_id, c.product_quantity, p.product_name, p.product_price, p.discount_price, p.product_icon, p.product_desc, p.product_state, p.limit_number, p.discount_state from cart_item c, product p where c.user_id=#{userId} and c.product_id=p.product_id
     </select>
 
-
     <select id="getCartItemDTOByCartItemIdList" parameterType="java.util.List" resultType="cn.haizhi.market.main.bean.madao.CartItemDTO">
-        select c.item_id, c.user_id, c.shop_id, c.shop_name, c.product_id, c.product_quantity, c.item_category, p.product_name, p.product_price, p.discount_price, p.product_icon, p.product_desc, p.product_state from cart_item c, product p where c.product_id=p.product_id
+        select c.item_id, c.user_id, c.shop_id, c.shop_name, c.product_id, c.product_quantity, p.product_name, p.product_price, p.discount_price, p.product_icon, p.product_desc, p.product_state, p.limit_number, p.discount_state from cart_item c, product p where c.product_id=p.product_id
         and c.item_id in
         <foreach collection="list" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>
+
+
+
 
     <resultMap id="ShopPriceInfo" type="cn.haizhi.market.main.bean.madao.ShopPriceInfo">
         <id column="shop_id" jdbcType="BIGINT" property="shopId"></id>
@@ -87,6 +107,7 @@
             <result column="product_id" jdbcType="BIGINT" property="productId" />
             <result column="product_name" jdbcType="VARCHAR" property="productName" />
             <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+            <result column="product_unit" jdbcType="VARCHAR" property="productUnit"></result>
             <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
             <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
             <result column="product_icon" jdbcType="VARCHAR" property="productIcon" />
@@ -101,8 +122,6 @@
         <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
         <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
-        <result column="product_amount" jdbcType="DECIMAL" property="productAmount" />
-        <result column="send_price" jdbcType="DECIMAL" property="sendPrice"/>
         <result column="order_amount" jdbcType="DECIMAL" property="orderAmount"/>
         <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
         <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
@@ -124,6 +143,7 @@
             <result column="product_name" jdbcType="VARCHAR" property="productName" />
             <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
             <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
+            <result column="product_unit" jdbcType="VARCHAR" property="productUnit"></result>
             <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
             <result column="product_icon" jdbcType="VARCHAR" property="productIcon" />
         </collection>
@@ -169,6 +189,10 @@
         update product set product_stock = product_stock + #{arg1} where product_id = #{arg0}
     </update>
 
+    <update id="increaseGroupProductStock">
+        update group_product set product_stock = product_stock + #{arg1} where product_id = #{arg0}
+    </update>
+
 
     <resultMap id="groupDTOList" type="cn.haizhi.market.main.bean.madao.GroupDTO">
         <id column="group_id" property="groupId"></id>
@@ -197,6 +221,31 @@
         select * from pg_group g, group_member m where g.group_id = #{groupId} and g.group_id = m.group_id
     </select>
 
+
+    <resultMap id="PgCartItemDTO" type="cn.haizhi.market.main.bean.madao.PgCartItemDTO">
+        <id property="itemId" column="item_id" jdbcType="VARCHAR"></id>
+        <result property="userId" column="user_id" jdbcType="BIGINT"></result>
+        <result property="productQuantity" column="product_quantity" jdbcType="INTEGER"></result>
+        <result property="productId" column="product_id" jdbcType="BIGINT"></result>
+        <result property="productName" column="product_name" jdbcType="VARCHAR"></result>
+        <result property="productOprice" column="product_oprice" jdbcType="DECIMAL"></result>
+        <result property="productNprice" column="product_nprice" jdbcType="DECIMAL"></result>
+        <result property="productStock" column="product_stock" jdbcType="INTEGER"></result>
+        <result property="productUnit" column="product_unit" jdbcType="VARCHAR"></result>
+        <result property="productDesc" column="product_desc" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="getPgCartItemDTOListByUserId" resultMap="PgCartItemDTO">
+        select c.item_id, c.user_id, c.product_quantity, c.product_id, p.product_name, p.product_oprice, p.product_nprice, p.product_stock, p.product_unit, p.product_desc from  group_product p, pg_cart_item c where c.user_id=#{userId} AND c.product_id = p.product_id
+    </select>
+
+    <select id="getPgCartItemDTOByCartItemIdList" resultMap="PgCartItemDTO" parameterType="java.util.List">
+        select c.item_id, c.user_id, c.product_quantity, c.product_id, p.product_name, p.product_oprice, p.product_nprice, p.product_stock, p.product_unit, p.product_desc from  group_product p, pg_cart_item c where  c.product_id = p.product_id
+        and c.item_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 
 
 

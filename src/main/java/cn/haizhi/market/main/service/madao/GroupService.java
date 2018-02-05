@@ -64,8 +64,10 @@ public class GroupService {
         group.setLeadMemberId(groupMember.getMemberId());
         pgOrderMaster.setGroupId(group.getGroupId());
         pgOrderMaster.setOrderStatus(PgOrderEnum.IN_GROUP.getCode());
-        pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
-        groupMapper.insert(group);
+        int result1 = pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
+        int result2 = groupMapper.insert(group);
+        if(result1<=0 || result2<=0)
+            throw new MadaoException(ErrorEnum.OPERATION_FAIL);
         return group;
     }
 
@@ -127,14 +129,17 @@ public class GroupService {
         }
         PgGroup pgGroup = new PgGroup();
         BeanUtils.copyProperties(groupDTO, pgGroup);
-        groupMapper.updateByPrimaryKeySelective(pgGroup);
-
+        int result = groupMapper.updateByPrimaryKeySelective(pgGroup);
+        if(result<=0)
+            throw new MadaoException(ErrorEnum.OPERATION_FAIL);
         //添加组成员
         addGroupMember(pgOrderMaster, pgGroup);
         //更新订单信息
         pgOrderMaster.setGroupId(groupDTO.getGroupId());
         pgOrderMaster.setOrderStatus(PgOrderEnum.IN_GROUP.getCode());
-        pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
+        result = pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
+        if(result<=0)
+            throw new MadaoException(ErrorEnum.OPERATION_FAIL);
         //如果拼购组已完成，更新各个订单
         if(flag){
             setGroupOrderFinish(groupId);
@@ -150,7 +155,9 @@ public class GroupService {
         List<PgOrderMaster> pgOrderMasterList = pgOrderMasterMapper.selectByExample(example);
         for(PgOrderMaster pgOrderMaster: pgOrderMasterList){
             pgOrderMaster.setOrderStatus(PgOrderEnum.IN_GROUP.getCode());
-            pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
+            int result = pgOrderMasterMapper.updateByPrimaryKeySelective(pgOrderMaster);
+            if(result<=0)
+                throw new MadaoException(ErrorEnum.OPERATION_FAIL);
         }
     }
 
@@ -164,7 +171,9 @@ public class GroupService {
         groupMember.setUserId(pgOrderMaster.getUserId());
         groupMember.setUserName(pgOrderMaster.getUserName());
         groupMember.setUserHeadPath(user.getUserHeadPath());
-        groupMemberMapper.insertSelective(groupMember);
+        int result = groupMemberMapper.insertSelective(groupMember);
+        if(result<=0)
+            throw new MadaoException(ErrorEnum.OPERATION_FAIL);
         return groupMember;
     }
 
