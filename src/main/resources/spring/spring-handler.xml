@@ -32,11 +32,11 @@
             <mvc:mapping path="/"/>
             <bean class="cn.haizhi.market.other.inters.BaseInterceptor"/>
         </mvc:interceptor>
-        <!--<mvc:interceptor>-->
-            <!--&lt;!&ndash;<mvc:mapping path="/order/**"/>&ndash;&gt;-->
-            <!--&lt;!&ndash;<mvc:mapping path="/pgOrder/**"/>&ndash;&gt;-->
-            <!--<bean class="cn.haizhi.market.other.inters.qiyuan.LoginInterceptor"/>-->
-        <!--</mvc:interceptor>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/order/**"/>
+            <mvc:mapping path="/pgOrder/**"/>
+            <bean class="cn.haizhi.market.other.inters.qiyuan.LoginInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
     <!-- 配置文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
