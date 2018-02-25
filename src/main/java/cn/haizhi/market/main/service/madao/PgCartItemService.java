@@ -48,7 +48,7 @@ public class PgCartItemService {
        //如果已存在该商品，加上数量，如果不存在，新建购物车项
        if(pgCartItemList.size()!=0) {
            pgCartItem = pgCartItemList.get(0);
-           pgCartItem.setProductQuantity(pgCartItem.getProductQuantity() + pgCartItemForm.getProductQuantity());
+           pgCartItem.setProductQuantity(pgCartItemForm.getProductQuantity());
            int result = pgCartItemMapper.updateByPrimaryKeySelective(pgCartItem);
            if(result<=0)
                throw new MadaoException(ErrorEnum.OPERATION_FAIL);
