@@ -51,8 +51,8 @@ public class OrderService {
     public List<OrderDTO> addOrder(OrderCreateForm orderForm) {
         //判断传入的地址id是否可用
         UserAddress address = commonMapper.getUserAddressById(orderForm.getAddressId());
-        if (address == null || address.getUserId() != orderForm.getUserId()) {
-            log.error("用户地址信息错误");
+        if (address == null || !address.getUserId().equals(orderForm.getUserId())) {
+            log.error("用户地址信息错误-------------{}", address);
             throw new MadaoException(ErrorEnum.ADDRESS_ERROR, IdResultMap.getIdMap(orderForm.getAddressId()));
         }
 

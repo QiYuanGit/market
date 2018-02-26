@@ -43,7 +43,7 @@ public class PgOrderService {
         pgOrderDTO.setOrderItemList(new ArrayList<>());
         UserAddress address = commonMapper.getUserAddressById(orderForm.getAddressId());
         //检查地址是否正确
-        if (address==null || address.getUserId() != orderForm.getUserId()) {
+        if (address==null || !address.getUserId().equals(orderForm.getUserId())) {
             log.error("用户地址信息错误");
             throw new MadaoException(ErrorEnum.ADDRESS_ERROR, IdResultMap.getIdMap(orderForm.getAddressId()));
         }
