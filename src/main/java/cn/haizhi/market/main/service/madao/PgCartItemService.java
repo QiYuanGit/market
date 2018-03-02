@@ -4,10 +4,13 @@ import cn.haizhi.market.main.bean.madao.PgCartItem;
 import cn.haizhi.market.main.bean.madao.PgCartItemDTO;
 import cn.haizhi.market.main.bean.madao.PgCartItemExample;
 import cn.haizhi.market.main.bean.richard.GroupProduct;
+import cn.haizhi.market.main.bean.richard.GroupProductPicture;
+import cn.haizhi.market.main.bean.richard.GroupProductPictureExample;
 import cn.haizhi.market.main.bean.richard.Product;
 import cn.haizhi.market.main.mapper.madao.CommonMapper;
 import cn.haizhi.market.main.mapper.madao.PgCartItemMapper;
 import cn.haizhi.market.main.mapper.richard.GroupProductMapper;
+import cn.haizhi.market.main.mapper.richard.GroupProductPictureMapper;
 import cn.haizhi.market.other.enums.madao.ErrorEnum;
 import cn.haizhi.market.other.exception.MadaoException;
 import cn.haizhi.market.other.form.madao.CartItemDeleteForm;
@@ -32,6 +35,9 @@ public class PgCartItemService {
 
    @Autowired
    private GroupProductMapper groupProductMapper;
+
+   @Autowired
+   private GroupProductPictureMapper groupProductPictureMapper;
 
    public String addCartItem(PgCartItemForm pgCartItemForm){
        //根据传入的productId判断该商品是否存在
@@ -66,6 +72,10 @@ public class PgCartItemService {
 
    public List<PgCartItemDTO> getPgCartItemList(Long userId){
        List<PgCartItemDTO> pgCartItemDTOList = commonMapper.getPgCartItemDTOListByUserId(userId);
+       for(PgCartItemDTO pgCartItemDTO: pgCartItemDTOList){
+           String picturePath = commonMapper.getGroupProductPicById(pgCartItemDTO.getProductId());
+           pgCartItemDTO.setPicturePath(picturePath);
+       }
        return pgCartItemDTOList;
    }
 

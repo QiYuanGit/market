@@ -26,4 +26,6 @@ public class PgCartItemDTO {
 
     private String productDesc;
 
+    private String picturePath;
+
 }

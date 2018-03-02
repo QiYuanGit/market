@@ -1,6 +1,5 @@
 package cn.haizhi.market.main.bean.madao;
 
-import jdk.internal.instrumentation.InstrumentationMethod;
 import lombok.Data;
 
 import javax.validation.constraints.Min;

@@ -49,4 +49,6 @@ public interface CommonMapper {
     List<PgCartItemDTO> getPgCartItemDTOByCartItemIdList(List<String> pgCartItemId);
 
     void increaseGroupProductStock(Long productId, Integer productQuantity);
+
+    String getGroupProductPicById(Long productId);
 }

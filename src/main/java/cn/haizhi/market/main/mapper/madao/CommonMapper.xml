@@ -247,6 +247,10 @@
         </foreach>
     </select>
 
+    <select id="getGroupProductPicById" resultType="java.lang.String" parameterType="java.lang.Long">
+        select picture_path from group_product_picture where product_id = #{productId}
+    </select>
+
 
 
 
