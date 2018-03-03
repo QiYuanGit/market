@@ -12,7 +12,6 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper=true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Shop extends BaseBean {
-
     private Long shopId;
 
     private String shopName;
@@ -21,15 +20,17 @@ public class Shop extends BaseBean {
 
     private String shopPhone;
 
+    private String shopNote;
+
     private Integer shopSale;
 
     private String shopDesc;
 
     private Integer shopGrade;
 
-    private BigDecimal limitPrice;
-
     private Integer shopState;
+
+    private BigDecimal limitPrice;
 
     private BigDecimal sendPrice;
 

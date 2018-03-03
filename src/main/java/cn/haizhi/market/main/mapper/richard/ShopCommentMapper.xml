@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.haizhi.market.main.mapper.richard.ShopCommentMapper">
 
-  <resultMap id="PackResultMap" type="cn.haizhi.market.main.view.richard.ShopCommentView">
+  <resultMap id="JoinResultMap" type="cn.haizhi.market.main.view.richard.ShopCommentView">
     <id column="comment_id" jdbcType="BIGINT" property="commentId" />
     <result column="comment_grade" jdbcType="INTEGER" property="commentGrade" />
     <result column="comment_content" jdbcType="VARCHAR" property="commentContent" />
@@ -11,7 +11,7 @@
     <result column="user_head_path" jdbcType="VARCHAR" property="userHead" />
   </resultMap>
 
-  <select id="selectWithJoin" parameterType="cn.haizhi.market.main.bean.richard.ShopComment" resultMap="PackResultMap">
+  <select id="selectJoin" parameterType="cn.haizhi.market.main.bean.richard.ShopComment" resultMap="JoinResultMap">
     select a.comment_id,comment_grade,comment_content,comment_content,comment_picture,
     b.user_name,b.user_head_path from shop_comment as a join user as b on a.user_id = b.user_id
     <where>

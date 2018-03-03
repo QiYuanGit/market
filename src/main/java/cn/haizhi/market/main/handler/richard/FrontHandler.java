@@ -5,9 +5,10 @@ import cn.haizhi.market.main.service.richard.FrontService;
 import cn.haizhi.market.main.view.ResultView;
 import cn.haizhi.market.other.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Date: 2018/1/9
@@ -57,7 +58,7 @@ public class FrontHandler {
     }
 
     @GetMapping(value = "/shop/comments",produces = "application/json; charset=UTF-8")
-    public ResultView getShopProduct(ShopComment shopCommentForm) throws Exception {
+    public ResultView getShopComments(ShopComment shopCommentForm) throws Exception {
         return ResultUtil.returnSuccess(frontService.getShopComments(shopCommentForm));
     }
 

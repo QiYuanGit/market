@@ -4,7 +4,7 @@ import cn.haizhi.market.main.bean.qiyuan.User;
 import cn.haizhi.market.main.service.qiyuan.UserService;
 import cn.haizhi.market.main.view.ResultView;
 import cn.haizhi.market.main.view.qiyuan.UserView;
-import cn.haizhi.market.other.form.UserForm;
+import cn.haizhi.market.other.form.qiyuan.UserForm;
 import cn.haizhi.market.other.util.BeanUtil;
 import cn.haizhi.market.other.util.ResultUtil;
 import com.github.pagehelper.PageInfo;

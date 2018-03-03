@@ -40,15 +40,15 @@ public class SellerHandler {
 
     @GetMapping(value = "/seller/{id}",produces = "application/json; charset=UTF-8")
     public ResultView getone(@PathVariable("id")Long id){
-        return ResultUtil.returnSuccess(sellerService.getone(id));
+        return ResultUtil.returnSuccess(sellerService.selectOne(id));
     }
 
     @GetMapping(value = "/sellers",produces = "application/json; charset=UTF-8")
     public ResultView getall(Seller form) throws Exception {
         if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
-            return ResultUtil.returnSuccess(new PageInfo<>(sellerService.getall(form)));
+            return ResultUtil.returnSuccess(new PageInfo<>(sellerService.selectLot(form)));
         }else{
-            return ResultUtil.returnSuccess(sellerService.getall(form));
+            return ResultUtil.returnSuccess(sellerService.selectLot(form));
         }
     }
 }

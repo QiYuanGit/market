@@ -24,13 +24,29 @@ public class SellerService {
     @Autowired
     private SellerMapper sellerMapper;
 
+    public List<Seller> selectLot(Seller form)throws Exception{
+        SellerExample example = new SellerExample();
+        SellerExample.Criteria criteria = example.createCriteria();
+        if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
+            PageHelper.startPage(form.getPageNum(),form.getPageSize());
+        }
+        return sellerMapper.selectByExample(example);
+    }
+
+    public Seller selectOne(Long id){
+        if(BeanUtil.isNull(id)){
+            throw new ResultException("编号不能为空！");
+        }
+        return sellerMapper.selectByPrimaryKey(id);
+    }
+
     public void insert(Seller form){
         form.setSellerId(BeanUtil.getId());
         sellerMapper.insertSelective(form);
     }
 
     public void update(Seller form){
-        Seller record = this.getone(form.getSellerId());
+        Seller record = this.selectOne(form.getSellerId());
         if(BeanUtil.isNull(record)){
             throw new ResultException("记录不存在！");
         }
@@ -39,27 +55,10 @@ public class SellerService {
     }
 
     public void delete(Long id){
-        if(BeanUtil.isNull(this.getone(id))){
+        if(BeanUtil.isNull(this.selectOne(id))){
             throw new ResultException("记录不存在！");
         }
         sellerMapper.deleteByPrimaryKey(id);
-    }
-
-    public Seller getone(Long id){
-        if(BeanUtil.isNull(id)){
-            throw new ResultException("编号不能为空！");
-        }
-        return sellerMapper.selectByPrimaryKey(id);
-    }
-
-    public List<Seller> getall(Seller form)throws Exception{
-        SellerExample example = new SellerExample();
-        SellerExample.Criteria criteria = example.createCriteria();
-
-        if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
-            PageHelper.startPage(form.getPageNum(),form.getPageSize());
-        }
-        return sellerMapper.selectByExample(example);
     }
 
 }

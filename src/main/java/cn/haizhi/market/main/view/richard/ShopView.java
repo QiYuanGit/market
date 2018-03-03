@@ -29,6 +29,8 @@ public class ShopView {
 
     private String shopDesc;
 
+    private String shopNote;
+
     private Integer shopSale;
 
     private Integer shopGrade;
@@ -39,6 +41,8 @@ public class ShopView {
 
     @JsonSerialize(using = SerializerUtil.class)
     private Date workTime;
+
+    private String sellerName;
 
     private List<ShopPictureView> shopPictures = new ArrayList<>();
 

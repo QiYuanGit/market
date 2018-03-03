@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ShopCommentMapper {
 
-    List<ShopCommentView> selectWithJoin(ShopComment form);
+    List<ShopCommentView> selectJoin(ShopComment form);
 
     long countByExample(ShopCommentExample example);
 

@@ -1,9 +1,7 @@
 package cn.haizhi.market.main.view.richard;
 
-import cn.haizhi.market.main.bean.BaseBean;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Date: 2018/1/10

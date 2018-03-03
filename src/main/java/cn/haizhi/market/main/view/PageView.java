@@ -20,13 +20,14 @@ public class PageView {
     Boolean isLastPage;
     List<?> list;
 
-    public PageView(List<?> list) {
-        PageInfo pageInfo = new PageInfo<>(list);
-       this.pageNum = pageInfo.getPageNum();
-        this.pageSize = pageInfo.getPageSize();
-        this.totalPages = pageInfo.getPages();
-        this.isFirstPage = pageInfo.isIsFirstPage();
-        this.isLastPage = pageInfo.isIsLastPage();
+    public PageView(List<?> list){
+        PageInfo<?> page = new PageInfo<>(list);
+        this.pageNum = page.getPageNum();
+        this.pageSize = page.getPageSize();
+        this.totalPages = page.getPages();
+        this.isFirstPage = page.isIsFirstPage();
+        this.isLastPage = page.isIsLastPage();
         this.list = list;
     }
+
 }

@@ -3,14 +3,12 @@ package cn.haizhi.market.main.handler.qiyuan;
 import cn.haizhi.market.main.bean.qiyuan.UserAddress;
 import cn.haizhi.market.main.service.qiyuan.UserAddressService;
 import cn.haizhi.market.main.view.ResultView;
-import cn.haizhi.market.other.form.UserAddressForm;
+import cn.haizhi.market.other.form.qiyuan.UserAddressForm;
 import cn.haizhi.market.other.util.BeanUtil;
 import cn.haizhi.market.other.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.PublicKey;
 
 import java.util.List;
 

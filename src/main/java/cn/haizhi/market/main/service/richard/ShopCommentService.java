@@ -25,35 +25,14 @@ public class ShopCommentService {
     @Autowired
     private ShopCommentMapper shopCommentMapper;
 
-    public void insert(ShopComment form){
-        form.setCommentId(BeanUtil.getId());
-        shopCommentMapper.insertSelective(form);
-    }
-
-    public void update(ShopComment form){
-        ShopComment record = this.getone(form.getCommentId());
-        if(BeanUtil.isNull(record)){
-            throw new ResultException("记录不存在！");
+    public List<ShopCommentView> selectJoin(ShopComment form){
+        if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
+            PageHelper.startPage(form.getPageNum(),form.getPageSize());
         }
-        BeanUtil.copyBean(form,record);
-        shopCommentMapper.updateByPrimaryKeySelective(record);
+        return shopCommentMapper.selectJoin(form);
     }
 
-    public void delete(Long id){
-        if(BeanUtil.isNull(this.getone(id))){
-            throw new ResultException("记录不存在！");
-        }
-        shopCommentMapper.deleteByPrimaryKey(id);
-    }
-
-    public ShopComment getone(Long id){
-        if(BeanUtil.isNull(id)){
-            throw new ResultException("编号不能为空！");
-        }
-        return shopCommentMapper.selectByPrimaryKey(id);
-    }
-
-    public List<ShopComment> getall(ShopComment form)throws Exception{
+    public List<ShopComment> selectLot(ShopComment form)throws Exception{
         ShopCommentExample example = new ShopCommentExample();
         ShopCommentExample.Criteria criteria = example.createCriteria();
         if(BeanUtil.notNull(form.getShopId())){
@@ -65,11 +44,32 @@ public class ShopCommentService {
         return shopCommentMapper.selectByExample(example);
     }
 
-    public List<ShopCommentView> getallWithJoin(ShopComment form){
-        if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
-            PageHelper.startPage(form.getPageNum(),form.getPageSize());
+    public ShopComment selectOne(Long id){
+        if(BeanUtil.isNull(id)){
+            throw new ResultException("编号不能为空！");
         }
-        return shopCommentMapper.selectWithJoin(form);
+        return shopCommentMapper.selectByPrimaryKey(id);
     }
 
+
+    public void insertOne(ShopComment form){
+        form.setCommentId(BeanUtil.getId());
+        shopCommentMapper.insertSelective(form);
+    }
+
+    public void updateOne(ShopComment form){
+        ShopComment record = this.selectOne(form.getCommentId());
+        if(BeanUtil.isNull(record)){
+            throw new ResultException("记录不存在！");
+        }
+        BeanUtil.copyBean(form,record);
+        shopCommentMapper.updateByPrimaryKeySelective(record);
+    }
+
+    public void deleteOne(Long id){
+        if(BeanUtil.isNull(this.selectOne(id))){
+            throw new ResultException("记录不存在！");
+        }
+        shopCommentMapper.deleteByPrimaryKey(id);
+    }
 }

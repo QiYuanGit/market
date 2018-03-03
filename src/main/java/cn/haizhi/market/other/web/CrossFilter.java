@@ -1,5 +1,7 @@
 package cn.haizhi.market.other.web;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -9,10 +11,14 @@ import java.io.IOException;
  * Author: Richard
  */
 
-
 public class CrossFilter implements Filter {
 
+    public void init(FilterConfig config) throws ServletException {
+        System.out.println("初始！");
+    }
+
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+        System.out.println("处理！");
         HttpServletResponse response = (HttpServletResponse) resp;
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS");
@@ -21,12 +27,8 @@ public class CrossFilter implements Filter {
         chain.doFilter(req, resp);
     }
 
-    public void init(FilterConfig config) throws ServletException {
-
-    }
-
     public void destroy() {
-
+        System.out.println("销毁！");
     }
 
 }

@@ -11,7 +11,7 @@
             <property name="suppressAllComments" value="true" />
         </commentGenerator>
         <!--连接数据库 -->
-        <jdbcConnection userId="root" password="GuoSanDan_" connectionURL="jdbc:mysql://rm-uf69w5es12e5rv2svo.mysql.rds.aliyuncs.com:3306/market?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=true" driverClass="com.mysql.jdbc.Driver" />
+        <jdbcConnection userId="root" password="OceanWiseTeam" connectionURL="jdbc:mysql://120.78.87.169:3306/market?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=true" driverClass="com.mysql.jdbc.Driver" />
         <javaTypeResolver>
             <!-- 取消强制转换BigDecimal类型-->
             <property name="forceBigDecimals" value="false" />
@@ -30,6 +30,6 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!-- 表名 -->
-        <table tableName="product_category" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />
+        <table tableName="shop" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" />
     </context>
 </generatorConfiguration>

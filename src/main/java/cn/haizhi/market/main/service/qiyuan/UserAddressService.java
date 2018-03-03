@@ -6,7 +6,7 @@ import cn.haizhi.market.main.mapper.qiyuan.UserAddressMapper;
 import cn.haizhi.market.other.enums.qiyuan.UserEnum;
 import cn.haizhi.market.other.exception.ResultException;
 import cn.haizhi.market.other.exception.qiyuan.QiException;
-import cn.haizhi.market.other.form.UserAddressForm;
+import cn.haizhi.market.other.form.qiyuan.UserAddressForm;
 import cn.haizhi.market.other.util.BeanUtil;
 import cn.haizhi.market.other.util.qiyuan.UserValidate;
 import cn.haizhi.market.other.util.qiyuan.zewei;

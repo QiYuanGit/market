@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.haizhi.market.main.mapper.richard.ShopMapper">
-
   <resultMap id="BaseResultMap" type="cn.haizhi.market.main.bean.richard.Shop">
     <id column="shop_id" jdbcType="BIGINT" property="shopId" />
     <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
     <result column="shop_address" jdbcType="VARCHAR" property="shopAddress" />
     <result column="shop_phone" jdbcType="VARCHAR" property="shopPhone" />
+    <result column="shop_note" jdbcType="VARCHAR" property="shopNote" />
     <result column="shop_sale" jdbcType="INTEGER" property="shopSale" />
     <result column="shop_desc" jdbcType="VARCHAR" property="shopDesc" />
     <result column="shop_grade" jdbcType="INTEGER" property="shopGrade" />
-    <result column="limit_price" jdbcType="DECIMAL" property="limitPrice" />
     <result column="shop_state" jdbcType="INTEGER" property="shopState" />
+    <result column="limit_price" jdbcType="DECIMAL" property="limitPrice" />
     <result column="send_price" jdbcType="DECIMAL" property="sendPrice" />
     <result column="work_time" jdbcType="TIME" property="workTime" />
     <result column="is_recom" jdbcType="BIT" property="isRecom" />
@@ -48,8 +48,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    shop_id, shop_name, shop_address, shop_phone, shop_sale, shop_desc, shop_grade, limit_price, 
-    shop_state, send_price, work_time, is_recom, recom_order, seller_id
+    shop_id, shop_name, shop_address, shop_phone, shop_note, shop_sale, shop_desc, shop_grade, 
+    shop_state, limit_price, send_price, work_time, is_recom, recom_order, seller_id
   </sql>
   <select id="selectByExample" parameterType="cn.haizhi.market.main.bean.richard.ShopExample" resultMap="BaseResultMap">
     select
@@ -77,15 +77,17 @@
   </delete>
   <insert id="insert" parameterType="cn.haizhi.market.main.bean.richard.Shop">
     insert into shop (shop_id, shop_name, shop_address, 
-      shop_phone, shop_sale, shop_desc, 
-      shop_grade, limit_price, shop_state, 
-      send_price, work_time, is_recom, 
-      recom_order, seller_id)
+      shop_phone, shop_note, shop_sale, 
+      shop_desc, shop_grade, shop_state, 
+      limit_price, send_price, work_time, 
+      is_recom, recom_order, seller_id
+      )
     values (#{shopId,jdbcType=BIGINT}, #{shopName,jdbcType=VARCHAR}, #{shopAddress,jdbcType=VARCHAR}, 
-      #{shopPhone,jdbcType=VARCHAR}, #{shopSale,jdbcType=INTEGER}, #{shopDesc,jdbcType=VARCHAR}, 
-      #{shopGrade,jdbcType=INTEGER}, #{limitPrice,jdbcType=DECIMAL}, #{shopState,jdbcType=INTEGER}, 
-      #{sendPrice,jdbcType=DECIMAL}, #{workTime,jdbcType=TIME}, #{isRecom,jdbcType=BIT}, 
-      #{recomOrder,jdbcType=INTEGER}, #{sellerId,jdbcType=BIGINT})
+      #{shopPhone,jdbcType=VARCHAR}, #{shopNote,jdbcType=VARCHAR}, #{shopSale,jdbcType=INTEGER}, 
+      #{shopDesc,jdbcType=VARCHAR}, #{shopGrade,jdbcType=INTEGER}, #{shopState,jdbcType=INTEGER}, 
+      #{limitPrice,jdbcType=DECIMAL}, #{sendPrice,jdbcType=DECIMAL}, #{workTime,jdbcType=TIME}, 
+      #{isRecom,jdbcType=BIT}, #{recomOrder,jdbcType=INTEGER}, #{sellerId,jdbcType=BIGINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.haizhi.market.main.bean.richard.Shop">
     insert into shop
@@ -102,6 +104,9 @@
       <if test="shopPhone != null">
         shop_phone,
       </if>
+      <if test="shopNote != null">
+        shop_note,
+      </if>
       <if test="shopSale != null">
         shop_sale,
       </if>
@@ -111,11 +116,11 @@
       <if test="shopGrade != null">
         shop_grade,
       </if>
-      <if test="limitPrice != null">
-        limit_price,
-      </if>
       <if test="shopState != null">
         shop_state,
+      </if>
+      <if test="limitPrice != null">
+        limit_price,
       </if>
       <if test="sendPrice != null">
         send_price,
@@ -146,6 +151,9 @@
       <if test="shopPhone != null">
         #{shopPhone,jdbcType=VARCHAR},
       </if>
+      <if test="shopNote != null">
+        #{shopNote,jdbcType=VARCHAR},
+      </if>
       <if test="shopSale != null">
         #{shopSale,jdbcType=INTEGER},
       </if>
@@ -155,11 +163,11 @@
       <if test="shopGrade != null">
         #{shopGrade,jdbcType=INTEGER},
       </if>
-      <if test="limitPrice != null">
-        #{limitPrice,jdbcType=DECIMAL},
-      </if>
       <if test="shopState != null">
         #{shopState,jdbcType=INTEGER},
+      </if>
+      <if test="limitPrice != null">
+        #{limitPrice,jdbcType=DECIMAL},
       </if>
       <if test="sendPrice != null">
         #{sendPrice,jdbcType=DECIMAL},
@@ -196,6 +204,9 @@
       <if test="shopPhone != null">
         shop_phone = #{shopPhone,jdbcType=VARCHAR},
       </if>
+      <if test="shopNote != null">
+        shop_note = #{shopNote,jdbcType=VARCHAR},
+      </if>
       <if test="shopSale != null">
         shop_sale = #{shopSale,jdbcType=INTEGER},
       </if>
@@ -205,11 +216,11 @@
       <if test="shopGrade != null">
         shop_grade = #{shopGrade,jdbcType=INTEGER},
       </if>
-      <if test="limitPrice != null">
-        limit_price = #{limitPrice,jdbcType=DECIMAL},
-      </if>
       <if test="shopState != null">
         shop_state = #{shopState,jdbcType=INTEGER},
+      </if>
+      <if test="limitPrice != null">
+        limit_price = #{limitPrice,jdbcType=DECIMAL},
       </if>
       <if test="sendPrice != null">
         send_price = #{sendPrice,jdbcType=DECIMAL},
@@ -234,11 +245,12 @@
     set shop_name = #{shopName,jdbcType=VARCHAR},
       shop_address = #{shopAddress,jdbcType=VARCHAR},
       shop_phone = #{shopPhone,jdbcType=VARCHAR},
+      shop_note = #{shopNote,jdbcType=VARCHAR},
       shop_sale = #{shopSale,jdbcType=INTEGER},
       shop_desc = #{shopDesc,jdbcType=VARCHAR},
       shop_grade = #{shopGrade,jdbcType=INTEGER},
-      limit_price = #{limitPrice,jdbcType=DECIMAL},
       shop_state = #{shopState,jdbcType=INTEGER},
+      limit_price = #{limitPrice,jdbcType=DECIMAL},
       send_price = #{sendPrice,jdbcType=DECIMAL},
       work_time = #{workTime,jdbcType=TIME},
       is_recom = #{isRecom,jdbcType=BIT},

@@ -1,4 +1,4 @@
-package cn.haizhi.market.other.form;
+package cn.haizhi.market.other.form.qiyuan;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -36,9 +36,10 @@ public class ProductService {
         if(BeanUtil.notNull(form.getCategoryId())){
             criteria.andCategoryIdEqualTo(form.getCategoryId());
         }
-        if(BeanUtil.notEmpty(form.getIdList())){
+        if(BeanUtil.notEmpty(form.getIdList())) {
             criteria.andCategoryIdIn(form.getIdList());
         }
+
         if(BeanUtil.notNull(form.getPageNum()) && BeanUtil.notNull(form.getPageSize())){
             PageHelper.startPage(form.getPageNum(),form.getPageSize());
         }

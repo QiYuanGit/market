@@ -2,13 +2,10 @@ package cn.haizhi.market.main.mapper.richard;
 
 import cn.haizhi.market.main.bean.richard.Shop;
 import cn.haizhi.market.main.bean.richard.ShopExample;
-import cn.haizhi.market.main.view.richard.ShopView;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ShopMapper {
-
     long countByExample(ShopExample example);
 
     int deleteByPrimaryKey(Long shopId);

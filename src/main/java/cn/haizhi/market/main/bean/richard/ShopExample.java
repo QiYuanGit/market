@@ -403,6 +403,76 @@ public class ShopExample {
             return (Criteria) this;
         }
 
+        public Criteria andShopNoteIsNull() {
+            addCriterion("shop_note is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteIsNotNull() {
+            addCriterion("shop_note is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteEqualTo(String value) {
+            addCriterion("shop_note =", value, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteNotEqualTo(String value) {
+            addCriterion("shop_note <>", value, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteGreaterThan(String value) {
+            addCriterion("shop_note >", value, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteGreaterThanOrEqualTo(String value) {
+            addCriterion("shop_note >=", value, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteLessThan(String value) {
+            addCriterion("shop_note <", value, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteLessThanOrEqualTo(String value) {
+            addCriterion("shop_note <=", value, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteLike(String value) {
+            addCriterion("shop_note like", value, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteNotLike(String value) {
+            addCriterion("shop_note not like", value, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteIn(List<String> values) {
+            addCriterion("shop_note in", values, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteNotIn(List<String> values) {
+            addCriterion("shop_note not in", values, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteBetween(String value1, String value2) {
+            addCriterion("shop_note between", value1, value2, "shopNote");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopNoteNotBetween(String value1, String value2) {
+            addCriterion("shop_note not between", value1, value2, "shopNote");
+            return (Criteria) this;
+        }
+
         public Criteria andShopSaleIsNull() {
             addCriterion("shop_sale is null");
             return (Criteria) this;
@@ -593,66 +663,6 @@ public class ShopExample {
             return (Criteria) this;
         }
 
-        public Criteria andLimitPriceIsNull() {
-            addCriterion("limit_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceIsNotNull() {
-            addCriterion("limit_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceEqualTo(BigDecimal value) {
-            addCriterion("limit_price =", value, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceNotEqualTo(BigDecimal value) {
-            addCriterion("limit_price <>", value, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceGreaterThan(BigDecimal value) {
-            addCriterion("limit_price >", value, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("limit_price >=", value, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceLessThan(BigDecimal value) {
-            addCriterion("limit_price <", value, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("limit_price <=", value, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceIn(List<BigDecimal> values) {
-            addCriterion("limit_price in", values, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceNotIn(List<BigDecimal> values) {
-            addCriterion("limit_price not in", values, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("limit_price between", value1, value2, "limitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andLimitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("limit_price not between", value1, value2, "limitPrice");
-            return (Criteria) this;
-        }
-
         public Criteria andShopStateIsNull() {
             addCriterion("shop_state is null");
             return (Criteria) this;
@@ -710,6 +720,66 @@ public class ShopExample {
 
         public Criteria andShopStateNotBetween(Integer value1, Integer value2) {
             addCriterion("shop_state not between", value1, value2, "shopState");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceIsNull() {
+            addCriterion("limit_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceIsNotNull() {
+            addCriterion("limit_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceEqualTo(BigDecimal value) {
+            addCriterion("limit_price =", value, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceNotEqualTo(BigDecimal value) {
+            addCriterion("limit_price <>", value, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceGreaterThan(BigDecimal value) {
+            addCriterion("limit_price >", value, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("limit_price >=", value, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceLessThan(BigDecimal value) {
+            addCriterion("limit_price <", value, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("limit_price <=", value, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceIn(List<BigDecimal> values) {
+            addCriterion("limit_price in", values, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceNotIn(List<BigDecimal> values) {
+            addCriterion("limit_price not in", values, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("limit_price between", value1, value2, "limitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("limit_price not between", value1, value2, "limitPrice");
             return (Criteria) this;
         }
 

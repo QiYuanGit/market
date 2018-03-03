@@ -30,4 +30,5 @@ public class ProductView {
 
     private String limitNumber;
 
+    private Long shopId;
 }

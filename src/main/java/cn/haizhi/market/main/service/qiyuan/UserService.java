@@ -7,7 +7,7 @@ import cn.haizhi.market.main.view.qiyuan.UserView;
 import cn.haizhi.market.other.enums.qiyuan.UserEnum;
 import cn.haizhi.market.other.exception.ResultException;
 import cn.haizhi.market.other.exception.qiyuan.QiException;
-import cn.haizhi.market.other.form.UserForm;
+import cn.haizhi.market.other.form.qiyuan.UserForm;
 import cn.haizhi.market.other.util.BeanUtil;
 import cn.haizhi.market.other.util.qiyuan.*;
 import com.alibaba.fastjson.JSON;
