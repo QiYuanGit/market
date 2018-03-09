@@ -533,6 +533,76 @@ public class ShopExample {
             return (Criteria) this;
         }
 
+        public Criteria andShopIconIsNull() {
+            addCriterion("shop_icon is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconIsNotNull() {
+            addCriterion("shop_icon is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconEqualTo(String value) {
+            addCriterion("shop_icon =", value, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconNotEqualTo(String value) {
+            addCriterion("shop_icon <>", value, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconGreaterThan(String value) {
+            addCriterion("shop_icon >", value, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconGreaterThanOrEqualTo(String value) {
+            addCriterion("shop_icon >=", value, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconLessThan(String value) {
+            addCriterion("shop_icon <", value, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconLessThanOrEqualTo(String value) {
+            addCriterion("shop_icon <=", value, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconLike(String value) {
+            addCriterion("shop_icon like", value, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconNotLike(String value) {
+            addCriterion("shop_icon not like", value, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconIn(List<String> values) {
+            addCriterion("shop_icon in", values, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconNotIn(List<String> values) {
+            addCriterion("shop_icon not in", values, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconBetween(String value1, String value2) {
+            addCriterion("shop_icon between", value1, value2, "shopIcon");
+            return (Criteria) this;
+        }
+
+        public Criteria andShopIconNotBetween(String value1, String value2) {
+            addCriterion("shop_icon not between", value1, value2, "shopIcon");
+            return (Criteria) this;
+        }
+
         public Criteria andShopDescIsNull() {
             addCriterion("shop_desc is null");
             return (Criteria) this;

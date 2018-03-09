@@ -12,6 +12,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper=true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Shop extends BaseBean {
+
     private Long shopId;
 
     private String shopName;
@@ -23,6 +24,8 @@ public class Shop extends BaseBean {
     private String shopNote;
 
     private Integer shopSale;
+
+    private String shopIcon;
 
     private String shopDesc;
 

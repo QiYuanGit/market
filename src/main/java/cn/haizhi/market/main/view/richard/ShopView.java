@@ -31,6 +31,8 @@ public class ShopView {
 
     private String shopNote;
 
+    private String shopIcon;
+
     private Integer shopSale;
 
     private Integer shopGrade;
@@ -48,5 +50,11 @@ public class ShopView {
 
     public void addPicture(ShopPictureView shopPictureView){
         shopPictures.add(shopPictureView);
+    }
+
+    private List<ProductView> shopProducts = new ArrayList<>();
+
+    public void addProduct(ProductView productView){
+        shopProducts.add(productView);
     }
 }

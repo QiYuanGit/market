@@ -75,5 +75,5 @@ public class ShopService {
         }
         shopMapper.deleteByPrimaryKey(id);
     }
-
+    
 }

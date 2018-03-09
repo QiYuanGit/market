@@ -20,6 +20,8 @@ public class GroupProductView {
 
     private String productName;
 
+    private String productIcon;
+
     private BigDecimal productOprice;
 
     private BigDecimal productNprice;

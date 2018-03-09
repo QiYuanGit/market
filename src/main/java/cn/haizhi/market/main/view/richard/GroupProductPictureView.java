@@ -12,5 +12,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class GroupProductPictureView {
 
+    private Long pictureId;
+
     private String picturePath;
 }

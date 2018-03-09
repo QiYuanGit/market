@@ -2,7 +2,6 @@ package cn.haizhi.market.main.mapper.richard;
 
 import cn.haizhi.market.main.bean.richard.Shop;
 import cn.haizhi.market.main.bean.richard.ShopExample;
-
 import java.util.List;
 
 public interface ShopMapper {

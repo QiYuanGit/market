@@ -8,6 +8,7 @@
     <result column="shop_phone" jdbcType="VARCHAR" property="shopPhone" />
     <result column="shop_note" jdbcType="VARCHAR" property="shopNote" />
     <result column="shop_sale" jdbcType="INTEGER" property="shopSale" />
+    <result column="shop_icon" jdbcType="VARCHAR" property="shopIcon" />
     <result column="shop_desc" jdbcType="VARCHAR" property="shopDesc" />
     <result column="shop_grade" jdbcType="INTEGER" property="shopGrade" />
     <result column="shop_state" jdbcType="INTEGER" property="shopState" />
@@ -48,8 +49,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    shop_id, shop_name, shop_address, shop_phone, shop_note, shop_sale, shop_desc, shop_grade, 
-    shop_state, limit_price, send_price, work_time, is_recom, recom_order, seller_id
+    shop_id, shop_name, shop_address, shop_phone, shop_note, shop_sale, shop_icon, shop_desc, 
+    shop_grade, shop_state, limit_price, send_price, work_time, is_recom, recom_order, 
+    seller_id
   </sql>
   <select id="selectByExample" parameterType="cn.haizhi.market.main.bean.richard.ShopExample" resultMap="BaseResultMap">
     select
@@ -78,16 +80,16 @@
   <insert id="insert" parameterType="cn.haizhi.market.main.bean.richard.Shop">
     insert into shop (shop_id, shop_name, shop_address, 
       shop_phone, shop_note, shop_sale, 
-      shop_desc, shop_grade, shop_state, 
-      limit_price, send_price, work_time, 
-      is_recom, recom_order, seller_id
-      )
+      shop_icon, shop_desc, shop_grade, 
+      shop_state, limit_price, send_price, 
+      work_time, is_recom, recom_order, 
+      seller_id)
     values (#{shopId,jdbcType=BIGINT}, #{shopName,jdbcType=VARCHAR}, #{shopAddress,jdbcType=VARCHAR}, 
       #{shopPhone,jdbcType=VARCHAR}, #{shopNote,jdbcType=VARCHAR}, #{shopSale,jdbcType=INTEGER}, 
-      #{shopDesc,jdbcType=VARCHAR}, #{shopGrade,jdbcType=INTEGER}, #{shopState,jdbcType=INTEGER}, 
-      #{limitPrice,jdbcType=DECIMAL}, #{sendPrice,jdbcType=DECIMAL}, #{workTime,jdbcType=TIME}, 
-      #{isRecom,jdbcType=BIT}, #{recomOrder,jdbcType=INTEGER}, #{sellerId,jdbcType=BIGINT}
-      )
+      #{shopIcon,jdbcType=VARCHAR}, #{shopDesc,jdbcType=VARCHAR}, #{shopGrade,jdbcType=INTEGER}, 
+      #{shopState,jdbcType=INTEGER}, #{limitPrice,jdbcType=DECIMAL}, #{sendPrice,jdbcType=DECIMAL}, 
+      #{workTime,jdbcType=TIME}, #{isRecom,jdbcType=BIT}, #{recomOrder,jdbcType=INTEGER}, 
+      #{sellerId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="cn.haizhi.market.main.bean.richard.Shop">
     insert into shop
@@ -109,6 +111,9 @@
       </if>
       <if test="shopSale != null">
         shop_sale,
+      </if>
+      <if test="shopIcon != null">
+        shop_icon,
       </if>
       <if test="shopDesc != null">
         shop_desc,
@@ -156,6 +161,9 @@
       </if>
       <if test="shopSale != null">
         #{shopSale,jdbcType=INTEGER},
+      </if>
+      <if test="shopIcon != null">
+        #{shopIcon,jdbcType=VARCHAR},
       </if>
       <if test="shopDesc != null">
         #{shopDesc,jdbcType=VARCHAR},
@@ -210,6 +218,9 @@
       <if test="shopSale != null">
         shop_sale = #{shopSale,jdbcType=INTEGER},
       </if>
+      <if test="shopIcon != null">
+        shop_icon = #{shopIcon,jdbcType=VARCHAR},
+      </if>
       <if test="shopDesc != null">
         shop_desc = #{shopDesc,jdbcType=VARCHAR},
       </if>
@@ -247,6 +258,7 @@
       shop_phone = #{shopPhone,jdbcType=VARCHAR},
       shop_note = #{shopNote,jdbcType=VARCHAR},
       shop_sale = #{shopSale,jdbcType=INTEGER},
+      shop_icon = #{shopIcon,jdbcType=VARCHAR},
       shop_desc = #{shopDesc,jdbcType=VARCHAR},
       shop_grade = #{shopGrade,jdbcType=INTEGER},
       shop_state = #{shopState,jdbcType=INTEGER},

@@ -22,6 +22,11 @@ public class FrontHandler {
     @Autowired
     private FrontService frontService;
 
+    @GetMapping(value = {"shops/products"},produces = "application/json; charset=UTF-8")
+    public ResultView getShopsOrProducts(@RequestParam("selectName")String selectName) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getShopsOrProducts(selectName));
+    }
+
     @GetMapping(value = {"/product/categories","/groupProduct/categories"},produces = "application/json; charset=UTF-8")
     public ResultView getProductCategories(ProductCategory productCategoryForm) throws Exception {
         return ResultUtil.returnSuccess(frontService.getProductCategories(productCategoryForm));
@@ -37,16 +42,6 @@ public class FrontHandler {
         return ResultUtil.returnSuccess(frontService.getProduct(productId));
     }
 
-    @GetMapping(value = "/groupProducts",produces = "application/json; charset=UTF-8")
-    public ResultView getGroupProducts(GroupProduct groupProductForm) throws Exception {
-        return ResultUtil.returnSuccess(frontService.getGroupProducts(groupProductForm));
-    }
-
-    @GetMapping(value = "/groupProduct",produces = "application/json; charset=UTF-8")
-    public ResultView getGroupProduct(@RequestParam("productId") Long productId) throws Exception {
-        return ResultUtil.returnSuccess(frontService.getGroupProduct(productId));
-    }
-
     @GetMapping(value = "/shops",produces = "application/json; charset=UTF-8")
     public ResultView getShops(Shop shopForm) throws Exception {
         return ResultUtil.returnSuccess(frontService.getShops(shopForm));
@@ -60,6 +55,16 @@ public class FrontHandler {
     @GetMapping(value = "/shop/comments",produces = "application/json; charset=UTF-8")
     public ResultView getShopComments(ShopComment shopCommentForm) throws Exception {
         return ResultUtil.returnSuccess(frontService.getShopComments(shopCommentForm));
+    }
+
+    @GetMapping(value = "/groupProducts",produces = "application/json; charset=UTF-8")
+    public ResultView getGroupProducts(GroupProduct groupProductForm) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getGroupProducts(groupProductForm));
+    }
+
+    @GetMapping(value = "/groupProduct",produces = "application/json; charset=UTF-8")
+    public ResultView getGroupProduct(@RequestParam("productId") Long productId) throws Exception {
+        return ResultUtil.returnSuccess(frontService.getGroupProduct(productId));
     }
 
 }
