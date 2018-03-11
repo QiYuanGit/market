@@ -7,10 +7,11 @@
         <id column="shop_id" jdbcType="BIGINT" property="shopId" />
         <result column="shop_name" jdbcType="VARCHAR" property="shopName"></result>
         <result column="product_id" jdbcType="BIGINT" property="productId"></result>
+        <result column="product_stock" jdbcType="INTEGER" property="productStock"></result>
     </resultMap>
     <!--根据传入的商铺id查询商铺-商铺信息-->
     <select id="getShopInfoByProductId" parameterType="long" resultMap="ProductShopMap">
-        select p.product_id, s.shop_id, s.shop_name from shop s, product p where product_id=#{productId} AND  s.shop_id= p.shop_id
+        select p.product_id, p.product_stock, s.shop_id, s.shop_name from shop s, product p where product_id=#{productId} AND  s.shop_id= p.shop_id
     </select>
 
 
@@ -253,12 +254,49 @@
 
 
 
+    <resultMap id="commonOrder" type="cn.haizhi.market.main.bean.madao.CommonOrder">
+        <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+        <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+        <result column="product_amount" jdbcType="DECIMAL" property="productAmount"/>
+        <result column="send_price" jdbcType="DECIMAL" property="sendPrice"/>
+        <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+        <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
+        <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus" />
+        <result column="comment_status" jdbcType="TINYINT" property="commentStatus" />
+        <result column="pay_way" jdbcType="TINYINT" property="payWay" />
+        <result column="pay_acount" jdbcType="VARCHAR" property="payAcount" />
+        <result column="delivery_time"  property="deliveryTime" />
+        <result column="arrive_time"  property="arriveTime"/>
+        <result column="receive_time"  property="receiveTime"/>
+        <result column="comment_id" jdbcType="BIGINT" property="commentId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="order_remark" jdbcType="VARCHAR" property="orderRemark" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <collection property="orderItemList" ofType="cn.haizhi.market.main.bean.madao.OrderItem">
+            <id column="item_id" jdbcType="VARCHAR" property="itemId" />
+            <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+            <result column="product_id" jdbcType="BIGINT" property="productId" />
+            <result column="product_name" jdbcType="VARCHAR" property="productName" />
+            <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+            <result column="product_unit" jdbcType="VARCHAR" property="productUnit"></result>
+            <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
+            <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
+            <result column="product_icon" jdbcType="VARCHAR" property="productIcon" />
+        </collection>
+    </resultMap>
 
+    <select id="getCommonOrderList" resultMap="commonOrder">
+        select * from order_master m, order_item i where m.order_id = i.order_id  <if test="arg0 != null"> AND m.shop_id=#{arg0} </if> <if test="arg1 != null"> AND m.user_id=#{arg1} </if><if test="arg2 != null">  AND m.order_status=#{arg2}</if> <if test="arg3 != null">  AND m.pay_status=#{arg3}</if> <if test="arg4 != null">  AND m.delivery_status=#{arg4}</if> <if test="arg5 != null">  AND m.comment_status=#{arg5}</if>
+    </select>
 
-
-
-
-
-
-
+    <select id="getPgCommonOrderList" resultMap="commonOrder">
+        select * from pg_order_master m, order_item i where m.order_id = i.order_id   <if test="arg0 != null"> AND m.user_id=#{arg0} </if> <if test="arg1 != null">  AND m.order_status=#{arg1}</if> <if test="arg2 != null">  AND m.pay_status=#{arg2}</if> <if test="arg3 != null">  AND m.delivery_status=#{arg3}</if> <if test="arg4 != null">  AND m.comment_status=#{arg4}</if>
+    </select>
 </mapper>

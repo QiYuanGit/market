@@ -40,12 +40,15 @@ public class CartItemService {
         if(productShop==null || productShop.getShopId()==null) {
             throw new MadaoException(ErrorEnum.PRODUCT_INFO_ERROR, IdResultMap.getIdMap(cartItemForm.getProductId()));
         }
+        if(productShop.getProductStock()<cartItemForm.getProductQuantity()){
+            throw new MadaoException(ErrorEnum.PRODUCT_STOCK_ERROR, IdResultMap.getIdMap(cartItemForm.getProductId()));
+        }
 
         //判断该项商品是否已在购物车，如果是的话，更新数量，如果不是的话，新建项
         List<CartItem> cartItemList = checkItemExist(cartItemForm.getUserId(), cartItemForm.getProductId());
         if(cartItemList.size()>0){
             CartItem cartItem = cartItemList.get(0);
-            cartItem.setProductQuantity(cartItem.getProductQuantity() + cartItemForm.getProductQuantity());
+            cartItem.setProductQuantity(cartItemForm.getProductQuantity());
             int result = cartItemMapper.updateByPrimaryKeySelective(cartItem);
             if(result<=0)
                 throw new MadaoException(ErrorEnum.OPERATION_FAIL);

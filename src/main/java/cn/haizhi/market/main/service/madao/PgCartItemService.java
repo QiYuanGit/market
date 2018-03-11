@@ -44,6 +44,10 @@ public class PgCartItemService {
        GroupProduct groupProduct = groupProductMapper.selectByPrimaryKey(pgCartItemForm.getProductId());
        if(groupProduct==null)
            throw new MadaoException(ErrorEnum.PRODUCT_NOT_EXIST, IdResultMap.getIdMap(pgCartItemForm.getProductId()));
+       //如果商品库存不足就抛出异常
+       if(groupProduct.getProductStock()<pgCartItemForm.getProductQuantity()){
+           throw new MadaoException(ErrorEnum.PRODUCT_STOCK_ERROR, IdResultMap.getIdMap(pgCartItemForm.getProductId()));
+       }
        //判断该用户的购物车是否已经有该商品
        PgCartItemExample example = new PgCartItemExample();
        PgCartItemExample.Criteria criteria = example.createCriteria();

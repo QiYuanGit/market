@@ -1,6 +1,8 @@
 package cn.haizhi.market.main.handler.madao;
 
+import cn.haizhi.market.main.bean.madao.CommonOrder;
 import cn.haizhi.market.main.bean.madao.OrderDTO;
+import cn.haizhi.market.main.service.madao.CommonOrderService;
 import cn.haizhi.market.main.service.madao.OrderService;
 import cn.haizhi.market.main.view.ResultView;
 import cn.haizhi.market.other.enums.madao.ErrorEnum;
@@ -24,6 +26,9 @@ import static cn.haizhi.market.other.util.FormErrorUtil.getFormErrors;
 public class OrderHandler {
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private CommonOrderService commonOrderService;
 
     //下订单
     @PostMapping("/order")
@@ -164,5 +169,11 @@ public class OrderHandler {
         }
         orderService.setOrderRemark(form.getUserId(), form.getOrderId(), form.getRemark());
         return ResultUtil.returnSuccess();
+    }
+
+    //用户获取两种类型的订单
+    @GetMapping("/order/allType")
+    public ResultView getCommonOrderByUser(@RequestParam("userId") Long userId, @RequestParam(value = "orderStatus", required = false) Byte orderStatus, @RequestParam(value = "payStatus", required = false) Byte payStatus, @RequestParam(value = "deliveryStatus", required = false) Byte deliveryStatus, @RequestParam(value = "commentStatus", required = false) Byte commentStatus) {
+        return ResultUtil.returnSuccess(commonOrderService.getCommonOrder(userId, orderStatus, payStatus, deliveryStatus, commentStatus));
     }
 }

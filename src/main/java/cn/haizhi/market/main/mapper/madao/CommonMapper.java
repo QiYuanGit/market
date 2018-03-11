@@ -2,9 +2,7 @@ package cn.haizhi.market.main.mapper.madao;
 
 import cn.haizhi.market.main.bean.madao.*;
 import cn.haizhi.market.main.bean.qiyuan.UserAddress;
-import org.apache.ibatis.type.JdbcType;
 
-import java.sql.JDBCType;
 import java.util.List;
 
 public interface CommonMapper {
@@ -47,6 +45,10 @@ public interface CommonMapper {
     List<PgCartItemDTO> getPgCartItemDTOListByUserId(Long userId);
 
     List<PgCartItemDTO> getPgCartItemDTOByCartItemIdList(List<String> pgCartItemId);
+
+    List<CommonOrder> getCommonOrderList(Long shopId, Long userId, Byte orderStatus, Byte payStatus, Byte deliveryStatus, Byte commentStatus);
+
+    List<CommonOrder> getPgCommonOrderList(Long userId, Byte orderStatus, Byte payStatus, Byte deliveryStatus, Byte commentStatus);
 
     void increaseGroupProductStock(Long productId, Integer productQuantity);
 
