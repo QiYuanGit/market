@@ -10,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
@@ -52,20 +53,20 @@ public class UserAddressHandler {
     }
 
     @GetMapping(value = "/userAddress/user/{id}",produces = "application/json;charset=UTF-8")
-    public ResultView getOneUserAllAddress(@PathVariable("id") Long id){
-        List<UserAddress> userAddressList = userAddressService.getOneUserAllAddress(id);
+    public ResultView getOneUserAllAddress(@PathVariable("id") Long id,HttpSession session){
+        List<UserAddress> userAddressList = userAddressService.getOneUserAllAddress(id,session);
         return ResultUtil.returnSuccess(userAddressList );
     }
 
     @PostMapping(value = "/userAddress/updateDefaultAddress",produces = "application/json;charset=UTF-8")
-    public ResultView updateDefaultAddress(@RequestBody UserAddress userAddress){
-        userAddressService.updateDefaultAddress(userAddress);
+    public ResultView updateDefaultAddress(@RequestBody UserAddress userAddress,HttpSession session){
+        userAddressService.updateDefaultAddress(userAddress,session);
         return ResultUtil.returnSuccess();
     }
 
     @GetMapping(value = "/userAddress/getDefaultAddress/{id}",produces = "application/json;charset=UTF-8")
-    public ResultView getDefaultAddress(@PathVariable("id") Long id){
-        UserAddress userAddress = userAddressService.getDefaultAddress(id);
+    public ResultView getDefaultAddress(@PathVariable("id") Long id, HttpSession session){
+        UserAddress userAddress = userAddressService.getDefaultAddress(id,session);
         return ResultUtil.returnSuccess(userAddress);
     }
 

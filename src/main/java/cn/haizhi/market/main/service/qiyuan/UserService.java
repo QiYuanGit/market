@@ -365,7 +365,13 @@ public class UserService {
     }
 
     //根据当前登录用户id查询用户信息和收货地址所有信息
-    public UserView getOneUserWith(Long id){
+    public UserView getOneUserWith(Long id,HttpSession session){
+        //判断当前用户有没有登录，登录的话去掉收货地址
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (BeanUtil.isNull(user)){
+            throw new QiException(UserEnum.NEEDLOGIN_RESULT.getCode(),UserEnum.NEEDLOGIN_RESULT.getHint());
+        }
+        //有登录保留收货地址
         UserView userView = userMapper.getUserWithAddress(id);
         return userView;
     }

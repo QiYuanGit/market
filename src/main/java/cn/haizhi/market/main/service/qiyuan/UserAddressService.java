@@ -1,5 +1,6 @@
 package cn.haizhi.market.main.service.qiyuan;
 
+import cn.haizhi.market.main.bean.qiyuan.User;
 import cn.haizhi.market.main.bean.qiyuan.UserAddress;
 import cn.haizhi.market.main.bean.qiyuan.UserAddressExample;
 import cn.haizhi.market.main.mapper.qiyuan.UserAddressMapper;
@@ -8,12 +9,14 @@ import cn.haizhi.market.other.exception.ResultException;
 import cn.haizhi.market.other.exception.qiyuan.QiException;
 import cn.haizhi.market.other.form.qiyuan.UserAddressForm;
 import cn.haizhi.market.other.util.BeanUtil;
+import cn.haizhi.market.other.util.qiyuan.Const;
 import cn.haizhi.market.other.util.qiyuan.UserValidate;
 import cn.haizhi.market.other.util.qiyuan.zewei;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -93,9 +96,14 @@ public class UserAddressService {
         return userAddressMapper.selectByExample(userAddressExample);
     }
     //根据用户id获取所有的收货地址
-    public List<UserAddress> getOneUserAllAddress(Long id){
+    public List<UserAddress> getOneUserAllAddress(Long id,HttpSession session){
         if(BeanUtil.isNull(id)){
             throw new ResultException("编号不能为空!");
+        }
+        //1、获取session,判断session是否存在
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (BeanUtil.isNull(user)){
+            throw new QiException(UserEnum.NEEDLOGIN_RESULT.getCode(),UserEnum.NEEDLOGIN_RESULT.getHint());
         }
         UserAddressExample userAddressExample = new UserAddressExample();
         UserAddressExample.Criteria criteria = userAddressExample.createCriteria();
@@ -104,9 +112,9 @@ public class UserAddressService {
         return userAddressList;
     }
     //根据用户id修改默认收货地址
-    public void updateDefaultAddress(UserAddress form){
+    public void updateDefaultAddress(UserAddress form,HttpSession session){
         //1、先找出该用户所有的收货地址
-        List<UserAddress> oneUserAllAddress = this.getOneUserAllAddress(form.getUserId());
+        List<UserAddress> oneUserAllAddress = this.getOneUserAllAddress(form.getUserId(),session);
         //2、判断所有的收货地址中有没有默认收货地址，有，修改并更新
         for(UserAddress userAddress:oneUserAllAddress){
             if(userAddress.getIsDefault().equals(true)){
@@ -122,12 +130,17 @@ public class UserAddressService {
         userAddressMapper.updateByPrimaryKeySelective(record);
     }
     //根据用户id获得默认收货地址
-    public UserAddress getDefaultAddress(Long id){
+    public UserAddress getDefaultAddress(Long id,HttpSession session){
         if(BeanUtil.isNull(id)){
             throw new ResultException("编号不能为空!");
         }
+        //1、获取session,判断session是否存在
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (BeanUtil.isNull(user)){
+            throw new QiException(UserEnum.NEEDLOGIN_RESULT.getCode(),UserEnum.NEEDLOGIN_RESULT.getHint());
+        }
         //根据用户id获取所有收货地址
-        List<UserAddress> userAddresses = this.getOneUserAllAddress(id);
+        List<UserAddress> userAddresses = this.getOneUserAllAddress(id,session);
         //2、判断所有的收货地址中有没有默认收货地址，有，返回
         for(UserAddress userAddress:userAddresses){
             if(userAddress.getIsDefault().equals(true)){

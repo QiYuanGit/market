@@ -73,8 +73,8 @@ public class UserHandler {
     }
     //10、根据当前登录用户id查询用户信息和收货地址所有信息
    @GetMapping(value = "/user/oneUserAndAddress/{id}",produces = "application/json;charset=UTF-8")
-    public ResultView getOneUserWithAddress(@PathVariable("id") Long id){
-        UserView userWithAddress = userService.getOneUserWith(id);
+    public ResultView getOneUserWithAddress(@PathVariable("id") Long id,HttpSession session){
+        UserView userWithAddress = userService.getOneUserWith(id,session);
        return ResultUtil.returnSuccess(userWithAddress);
     }
     //11、找到所有的用户
