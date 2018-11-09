@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.haizhi.market.main.mapper.madao.CommonMapper">
+
+    <resultMap id="ProductShopMap" type="cn.haizhi.market.main.bean.madao.ProductShop">
+        <id column="shop_id" jdbcType="BIGINT" property="shopId" />
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName"></result>
+        <result column="product_id" jdbcType="BIGINT" property="productId"></result>
+        <result column="discount_state" jdbcType="INTEGER" property="discountState"></result>
+    </resultMap>
+
+    <select id="getShopInfoByProductId" parameterType="long" resultMap="ProductShopMap">
+        select p.product_id, p.discount_state,  s.shop_id, s.shop_name from shop s, product p where s.shop_id= p.shop_id and product_id=#{productId}
+    </select>
+
+
+    <resultMap id="CartShopDTO" type="cn.haizhi.market.main.bean.madao.CartShopDTO">
+        <id column="cart_id" jdbcType="VARCHAR" property="cartId"></id>
+        <result column="user_id" jdbcType="BIGINT" property="userId"></result>
+        <result column="shop_id" jdbcType="BIGINT" property="shopId"></result>
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName"></result>
+        <result column="limit_price" jdbcType="DECIMAL" property="limitPrice"></result>
+        <result column="send_price" jdbcType="DECIMAL" property="sendPrice"></result>
+    </resultMap>
+
+    <select id="getCartShopDTOByUserId" resultMap="CartShopDTO">
+        select c.cart_id, c.user_id, c.shop_id, s.shop_name, s.shop_state, s.limit_price, s.send_price from cart_shop c, shop s where c.user_id = #{userId} and c.shop_id = s.shop_id
+    </select>
+
+
+    <select id="getCartItemDTO"  resultType="cn.haizhi.market.main.bean.madao.CartItemDTO">
+        select c.item_id, c.user_id, c.shop_id, c.shop_name, c.product_id, c.product_quantity, c.item_category, p.product_name, p.product_price, p.discount_price, p.product_icon, p.product_desc, p.product_state from cart_item c, product p where c.item_category=#{param2} and c.user_id=#{param1} and c.product_id=p.product_id
+    </select>
+
+
+    <select id="getCartItemDTOByCartItemIdList" parameterType="java.util.List" resultType="cn.haizhi.market.main.bean.madao.CartItemDTO">
+        select c.item_id, c.user_id, c.shop_id, c.shop_name, c.product_id, c.product_quantity, c.item_category, p.product_name, p.product_price, p.discount_price, p.product_icon, p.product_desc, p.product_state from cart_item c, product p where c.product_id=p.product_id
+        and c.item_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <resultMap id="ShopPriceInfo" type="cn.haizhi.market.main.bean.madao.ShopPriceInfo">
+        <id column="shop_id" jdbcType="BIGINT" property="shopId"></id>
+        <result column="limit_price" jdbcType="DECIMAL" property="limitPrice"></result>
+        <result column="send_price" jdbcType="DECIMAL" property="sendPrice"></result>
+        <result column="shop_state" jdbcType="INTEGER" property="shopState"></result>
+    </resultMap>
+
+    <select id="getShopPriceInfo" resultMap="ShopPriceInfo" parameterType="java.lang.Long">
+        select shop_Id, shop_state, limit_price, send_price from shop where shop_id = #{shopId}
+    </select>
+
+
+    <select id="getUserAddressById" parameterType="long" resultType="cn.haizhi.market.main.bean.qiyuan.UserAddress">
+        select * from user_address where address_id = #{addressId}
+    </select>
+
+    <resultMap id="orderDTO" type="cn.haizhi.market.main.bean.madao.OrderDTO">
+        <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+        <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+        <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+        <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
+        <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus" />
+        <result column="comment_status" jdbcType="TINYINT" property="commentStatus" />
+        <result column="pay_way" jdbcType="TINYINT" property="payWay" />
+        <result column="pay_acount" jdbcType="VARCHAR" property="payAcount" />
+        <result column="delivery_time" jdbcType="DATE" property="deliveryTime" />
+        <result column="comment_id" jdbcType="BIGINT" property="commentId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="order_remark" jdbcType="VARCHAR" property="orderRemark" />
+        <result column="send_price" jdbcType="DECIMAL" property="sendPrice" />
+        <result column="product_amount" jdbcType="DECIMAL" property="productAmount" />
+        <collection property="orderItemList" ofType="cn.haizhi.market.main.bean.madao.OrderItem">
+            <id column="item_id" jdbcType="VARCHAR" property="itemId" />
+            <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+            <result column="product_id" jdbcType="BIGINT" property="productId" />
+            <result column="product_name" jdbcType="VARCHAR" property="productName" />
+            <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+            <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
+            <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
+            <result column="product_icon" jdbcType="VARCHAR" property="productIcon" />
+        </collection>
+    </resultMap>
+
+
+    <resultMap id="PgOrderDTO" type="cn.haizhi.market.main.bean.madao.PgOrderDTO">
+        <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="group_id" jdbcType="VARCHAR" property="groupId" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+        <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+        <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+        <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
+        <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus" />
+        <result column="comment_status" jdbcType="TINYINT" property="commentStatus" />
+        <result column="pay_way" jdbcType="TINYINT" property="payWay" />
+        <result column="pay_acount" jdbcType="VARCHAR" property="payAcount" />
+        <result column="delivery_time" jdbcType="DATE" property="deliveryTime" />
+        <result column="comment_id" jdbcType="BIGINT" property="commentId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="order_remark" jdbcType="VARCHAR" property="orderRemark" />
+        <result column="send_price" jdbcType="DECIMAL" property="sendPrice" />
+        <result column="product_amount" jdbcType="DECIMAL" property="productAmount" />
+        <collection property="orderItemList" ofType="cn.haizhi.market.main.bean.madao.OrderItem">
+            <id column="item_id" jdbcType="VARCHAR" property="itemId" />
+            <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+            <result column="product_id" jdbcType="BIGINT" property="productId" />
+            <result column="product_name" jdbcType="VARCHAR" property="productName" />
+            <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+            <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
+            <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
+            <result column="product_icon" jdbcType="VARCHAR" property="productIcon" />
+        </collection>
+    </resultMap>
+
+    <select id="getOrderDTOByUserId" resultMap="orderDTO">
+        select * from order_master m, order_item i where m.order_id = i.order_id  <if test="arg0 != null"> AND m.shop_id=#{arg0} </if> <if test="arg1 != null"> AND m.user_id=#{arg1} </if><if test="arg2 != null">  AND m.order_status=#{arg2}</if> <if test="arg3 != null">  AND m.pay_status=#{arg3}</if> <if test="arg4 != null">  AND m.delivery_status=#{arg4}</if> <if test="arg5 != null">  AND m.comment_status=#{arg5}</if>
+    </select>
+
+    <select id="getPgOrderByUserId" resultMap="PgOrderDTO">
+        select * from pg_order_master m, order_item i where m.order_id = i.order_id   <if test="arg0 != null"> AND m.user_id=#{arg0} </if> <if test="arg1 != null">  AND m.order_status=#{arg1}</if> <if test="arg2 != null">  AND m.pay_status=#{arg2}</if> <if test="arg3 != null">  AND m.delivery_status=#{arg3}</if> <if test="arg4 != null">  AND m.comment_status=#{arg4}</if>
+    </select>
+
+    <select id="getOrderByOrderIdList" parameterType="java.util.List" resultMap="orderDTO">
+        select * from order_master m, order_item i where  m.order_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+         and m.order_id = i.order_id
+    </select>
+
+    <select id="getPgOrderByOrderIdList" parameterType="java.util.List" resultMap="PgOrderDTO">
+        select * from pg_order_master m, order_item i where m.order_id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND m.order_id = i.order_id
+    </select>
+
+
+
+
+
+    <select id="getPgOrderByOrderId" parameterType="java.lang.String" resultMap="PgOrderDTO">
+        select * from pg_order_master m, order_item i where m.order_id = #{orderId} and i.order_id = #{orderId}
+    </select>
+
+    <select id="getOrderByOrderId" parameterType="java.lang.String" resultMap="orderDTO">
+        select * from order_master m, order_item i where m.order_id = #{orderId} and m.order_id = i.order_id
+    </select>
+
+    <update id="increaseStock">
+        update product set product_stock = product_stock + #{arg1} where product_id = #{arg0}
+    </update>
+
+
+    <resultMap id="groupDTOList" type="cn.haizhi.market.main.bean.madao.GroupDTO">
+        <id column="group_id" property="groupId"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="group_num" property="groupNum"></result>
+        <result column="group_count" property="groupCount"></result>
+        <result column="group_status" property="groupStatus"></result>
+        <result column="dead_date" property="deadDate"></result>
+        <result column="active_status" property="activeStatus"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+        <result column="lead_member_id" property="leadMemberId"></result>
+        <collection property="groupMemberList" ofType="cn.haizhi.market.main.bean.madao.GroupMember">
+            <id column="member_id" property="memberId"></id>
+            <result column="group_id" property="groupId"></result>
+            <result column="user_id" property="userId"></result>
+            <result column="user_name" property="userName"></result>
+            <result column="user_Head_Path" property="userHeadPath"></result>
+            <result column="order_id" property="orderId"></result>
+        </collection>
+    </resultMap>
+    <select id="getGroupDTOByExample" resultMap="groupDTOList">
+          select * from pg_group g, group_member m where g.group_id = m.group_id <if test="arg0 != null"> AND g.group_status=#{arg0}</if> <if test="arg1 != null">AND g.active_status =#{arg1} </if>
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
